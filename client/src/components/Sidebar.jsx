@@ -23,9 +23,17 @@ import ExpandMoreOutlinedIcon from "@mui/icons-material/ExpandMoreOutlined";
 
 const Sidebar = () => {
   return (
-    <Box flex={2} minHeight="100vh">
-      <Box px="0.4rem">
-        <Box px="0.4rem">
+    <Box
+      flex={2}
+      width="100%"
+      minHeight="100vh"
+      borderRight={"1px solid #f0f0f0"}
+      sx={{
+        display: { xs: "none", lg: "flex" },
+      }}
+    >
+      <Box position="fixed" top="0.4rem" width="14.2857%">
+        <Box px="0.7rem">
           <Stack
             direction="row"
             justifyContent="space-between"
@@ -33,7 +41,7 @@ const Sidebar = () => {
           >
             <Typography>Logo</Typography>
             <IconButton>
-              <KeyboardDoubleArrowLeftOutlinedIcon />
+              <KeyboardDoubleArrowLeftOutlinedIcon color="primary" />
             </IconButton>
           </Stack>
           <List>
@@ -68,7 +76,7 @@ const Sidebar = () => {
           </List>
         </Box>
         <Divider />
-        <Accordion disableGutters elevation={0} square>
+        <Accordion disableGutters elevation={0} square defaultExpanded={true}>
           <AccordionSummary expandIcon={<ExpandMoreOutlinedIcon />}>
             <Typography variant="body2" sx={{ fontWeight: "bold" }}>
               SPACES

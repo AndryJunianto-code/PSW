@@ -5,7 +5,7 @@ import Mainbar from "../components/Mainbar";
 const MainHome = () => {
   return (
     <Box minHeight="100vh" height="100%" sx={{ overflowY: "hidden" }}>
-      <Stack direction="row" justifyContent="space-between" px="0.5rem">
+      <Stack direction="row" justifyContent="space-between">
         <Sidebar />
         <Mainbar />
       </Stack>

@@ -1,13 +1,21 @@
 import { createTheme } from "@mui/material/styles";
-import { green, purple } from "@mui/material/colors";
+import { purple } from "@mui/material/colors";
 
 export const theme = createTheme({
   palette: {
     primary: {
-      main: "#7b68ee",
+      main: "#645CBB", //dark purple
     },
     secondary: {
-      main: green[500],
+      // This is green.A700 as hex.
+      main: "#11cb5f",
     },
+    gray: {
+      bgLight: "#fafbfc",
+      fontMDark: "#959ba6",
+    },
+  },
+  typography: {
+    fontFamily: `"Lato", "sans-serif"`,
   },
 });
