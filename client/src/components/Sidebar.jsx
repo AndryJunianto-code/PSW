@@ -20,7 +20,7 @@ import KeyboardDoubleArrowLeftOutlinedIcon from "@mui/icons-material/KeyboardDou
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
 import ExpandMoreOutlinedIcon from "@mui/icons-material/ExpandMoreOutlined";
-
+import ArrowDropDownOutlinedIcon from "@mui/icons-material/ArrowDropDownOutlined";
 const Sidebar = () => {
   return (
     <Box
@@ -32,7 +32,7 @@ const Sidebar = () => {
         display: { xs: "none", lg: "flex" },
       }}
     >
-      <Box position="fixed" top="0.4rem" width="14.2857%">
+      <Box position="fixed" top="0.4rem" width="14.2747%">
         <Box px="0.7rem">
           <Stack
             direction="row"
@@ -121,6 +121,24 @@ const Sidebar = () => {
             </Box>
           </AccordionDetails>
         </Accordion>
+
+        <Box position="fixed" width="14.2747%" sx={{ bottom: 7 }}>
+          <Divider />
+          <Stack direction="row" alignItems="center" px="1rem" pt="0.4rem">
+            <Avatar
+              sx={{
+                bgcolor: "primary.main",
+                width: "24px",
+                height: "24px",
+                p: "0.2rem",
+                mr: "0.2rem",
+              }}
+            >
+              <Typography fontSize="0.8rem">AJ</Typography>
+            </Avatar>
+            <ArrowDropDownOutlinedIcon sx={{ width: "15px" }} />
+          </Stack>
+        </Box>
       </Box>
     </Box>
   );
