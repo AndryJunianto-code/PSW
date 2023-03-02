@@ -1,6 +1,6 @@
 import React from "react";
-import { Box, Button, Fab, Stack, Typography } from "@mui/material";
-import Sidebar from "../components/Sidebar";
+import { Box, Fab, Stack } from "@mui/material";
+import Sidebar from "../components/sidebar/Sidebar";
 import Mainbar from "../components/Mainbar";
 import AddIcon from "@mui/icons-material/Add";
 const MainHome = () => {

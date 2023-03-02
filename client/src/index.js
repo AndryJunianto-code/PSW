@@ -4,12 +4,18 @@ import "./index.css";
 import App from "./App";
 import { ThemeProvider } from "@mui/material/styles";
 import { theme } from "./theme";
+import { QueryClient, QueryClientProvider, useQuery } from "react-query";
+import axios from "axios";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
+const queryClient = new QueryClient();
+axios.defaults.baseURL = "http://localhost:5000/api";
 root.render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>
-      <App />
+      <QueryClientProvider client={queryClient}>
+        <App />
+      </QueryClientProvider>
     </ThemeProvider>
   </React.StrictMode>
 );

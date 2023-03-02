@@ -1,6 +1,6 @@
 import React from "react";
 import { Auth0Provider } from "@auth0/auth0-react";
-import { useNavigate } from "react-router-dom";
+import { Router, useNavigate } from "react-router-dom";
 
 const AuthProvider = ({ children }) => {
   const domain = process.env.REACT_APP_AUTH0_DOMAIN;
@@ -11,13 +11,15 @@ const AuthProvider = ({ children }) => {
     navigate(window.location.pathname);
   };
 
+  const auth0config = {
+    domain: process.env.REACT_APP_AUTH0_DOMAIN,
+    clientId: process.env.REACT_APP_AUTH0_CLIENT_ID,
+    authorizationParams: {
+      redirect_uri: window.location.origin,
+    },
+  };
   return (
-    <Auth0Provider
-      domain={domain}
-      clientId={clientId}
-      redirectUri={window.location.origin}
-      onRedirectCallback={onRedirectCallback}
-    >
+    <Auth0Provider {...auth0config} onRedirectCallback={onRedirectCallback}>
       {children}
     </Auth0Provider>
   );
