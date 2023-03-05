@@ -28,4 +28,25 @@ router.get("/getAll/:userId", async (req, res) => {
   }
 });
 
+//add project
+router.put("/addProject", async (req, res) => {
+  try {
+    const space = await Space.findByIdAndUpdate(
+      req.body.spaceId,
+      {
+        $push: {
+          projects: {
+            projectId: req.body.projectId,
+            projectTitle: req.body.projectTitle,
+          },
+        },
+      },
+      { new: true }
+    );
+    res.status(200).json(space);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
 module.exports = router;

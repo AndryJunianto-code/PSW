@@ -6,6 +6,7 @@ import { ThemeProvider } from "@mui/material/styles";
 import { theme } from "./theme";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import axios from "axios";
+import { DataContextProvider } from "./context/Context";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 const queryClient = new QueryClient();
@@ -14,7 +15,9 @@ root.render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>
       <QueryClientProvider client={queryClient}>
-        <App />
+        <DataContextProvider>
+          <App />
+        </DataContextProvider>
       </QueryClientProvider>
     </ThemeProvider>
   </React.StrictMode>

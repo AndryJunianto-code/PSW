@@ -5,8 +5,10 @@ import ArrowRightOutlinedIcon from "@mui/icons-material/ArrowRightOutlined";
 import { DragDropContext } from "react-beautiful-dnd";
 import { ListDroppable } from "../utils/ListDroppable";
 import IndividualListTask from "./individual/IndividualListTask";
+import { useDataContext } from "../context/Context";
 
 const ListView = () => {
+  const { activeProject } = useDataContext();
   const [todos, setTodos] = useState([
     { id: "1", task: "clean" },
     { id: "2", task: "running" },
@@ -23,8 +25,6 @@ const ListView = () => {
   };
   const handleDragEnd = (result) => {
     const { source, destination } = result;
-    console.log(source);
-    console.log(destination);
   };
   return (
     <Box
@@ -38,7 +38,7 @@ const ListView = () => {
       pt="0.4rem"
     >
       <DragDropContext onDragEnd={handleDragEnd}>
-        <Typography fontWeight="700">Work</Typography>
+        <Typography fontWeight="700">{activeProject.projectTitle}</Typography>
         <Box mt="1.6rem">
           <Stack direction="row" justifyContent="space-between">
             <Stack direction="row" alignItems={"center"}>

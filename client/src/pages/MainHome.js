@@ -4,6 +4,7 @@ import Sidebar from "../components/sidebar/Sidebar";
 import Mainbar from "../components/Mainbar";
 import AddIcon from "@mui/icons-material/Add";
 const MainHome = () => {
+  const handleOpenNewTaskModal = () => {};
   return (
     <Box minHeight="100vh" height="100%" sx={{ overflowY: "hidden" }}>
       <Stack direction="row" justifyContent="space-between">
@@ -15,6 +16,7 @@ const MainHome = () => {
         color="primary"
         borderRadius="4px"
         sx={{ position: "fixed", bottom: 15, right: 25 }}
+        onClick={handleOpenNewTaskModal}
       >
         <AddIcon sx={{ width: "1.2rem" }} />
       </Fab>

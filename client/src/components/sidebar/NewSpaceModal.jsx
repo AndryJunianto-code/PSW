@@ -23,7 +23,11 @@ const color = [
   "#bf4acc",
   "#074354",
 ];
-const NewSpaceModal = ({ handleCloseNewSpaceModal, openNewSpaceModal }) => {
+const NewSpaceModal = ({
+  handleCloseNewSpaceModal,
+  openNewSpaceModal,
+  refetchSpaces,
+}) => {
   const { user } = useAuth0();
   const [spaceColor, setSpaceColor] = useState("#40bc86");
   const [spaceTitle, setSpaceTitle] = useState("");
@@ -33,8 +37,8 @@ const NewSpaceModal = ({ handleCloseNewSpaceModal, openNewSpaceModal }) => {
 
   const { mutate: mutateSpace } = useMutation(createSpace, {
     onSuccess: (data) => {
-      console.log(data);
       handleCloseNewSpaceModal();
+      refetchSpaces();
     },
   });
 

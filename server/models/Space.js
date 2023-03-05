@@ -18,6 +18,10 @@ const SpaceSchema = new mongoose.Schema(
       type: Array,
       default: [],
     },
+    projects: {
+      type: Array,
+      default: [],
+    },
   },
   { timestamps: true }
 );

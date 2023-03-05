@@ -13,20 +13,25 @@ import { useQuery } from "react-query";
 import { useAuth0 } from "@auth0/auth0-react";
 import { fetchAllSpaces } from "../../request/spaceRequest";
 import IndividualSpaces from "../individual/IndividualSpaces";
+import NewProjectModal from "../sidebar/NewProjectModal";
 
 const SidebarSpaces = () => {
   const { user } = useAuth0();
   const [openNewSpaceModal, setOpenNewSpaceModal] = useState(false);
+  const [openNewProjectModal, setOpenNewProjectModal] = useState({
+    open: false,
+    spaceId: null,
+  });
   const handleOpenNewSpaceModal = () => setOpenNewSpaceModal(true);
   const handleCloseNewSpaceModal = () => setOpenNewSpaceModal(false);
   const [spaces, setSpaces] = useState([]);
-  const { data: spacesData, isSuccess: spacesSuccess } = useQuery(
-    ["fetchAllSpaces", user?.sub],
-    fetchAllSpaces,
-    {
-      retryDelay: 3000,
-    }
-  );
+  const {
+    data: spacesData,
+    isSuccess: spacesSuccess,
+    refetch: refetchSpaces,
+  } = useQuery(["fetchAllSpaces", user?.sub], fetchAllSpaces, {
+    retryDelay: 3000,
+  });
   useEffect(() => {
     spacesSuccess && setSpaces(spacesData);
   }, [spacesData, spacesSuccess]);
@@ -50,7 +55,12 @@ const SidebarSpaces = () => {
           <Box mt="0.7rem">
             {spaces !== null &&
               spaces.map((space) => (
-                <IndividualSpaces key={space._id} space={space} />
+                <IndividualSpaces
+                  key={space._id}
+                  space={space}
+                  openNewProjectModal={openNewProjectModal}
+                  setOpenNewProjectModal={setOpenNewProjectModal}
+                />
               ))}
           </Box>
         </AccordionDetails>
@@ -59,6 +69,12 @@ const SidebarSpaces = () => {
         handleCloseNewSpaceModal={handleCloseNewSpaceModal}
         handleOpenNewSpaceModal={handleOpenNewSpaceModal}
         openNewSpaceModal={openNewSpaceModal}
+        refetchSpaces={refetchSpaces}
+      />
+      <NewProjectModal
+        openNewProjectModal={openNewProjectModal}
+        setOpenNewProjectModal={setOpenNewProjectModal}
+        refetchSpaces={refetchSpaces}
       />
     </>
   );

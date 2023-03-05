@@ -15,3 +15,13 @@ export const fetchAllSpaces = async (obj) => {
   const { data } = await axios.get(`/spaces/getAll/${obj.queryKey[1]}`);
   return data;
 };
+
+//add project
+export const createProject = async (obj) => {
+  const { data } = await axios.put("/spaces/addProject", {
+    projectId: obj.projectId,
+    projectTitle: obj.projectTitle,
+    spaceId: obj.spaceId,
+  });
+  return data;
+};
