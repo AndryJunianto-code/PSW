@@ -7,7 +7,7 @@ const CalendarView = () => {
   const [currentMonth, setCurrentMonth] = useState(getMonth(2));
 
   return (
-    <Box backgroundColor="gray.bgLight" mt="8vh" height="92vh">
+    <Box backgroundColor="gray.bgLight" mt="5rem" height="90vh">
       <div className="gridSystem">
         {currentMonth &&
           currentMonth.map((row, i) => (

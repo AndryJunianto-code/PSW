@@ -12,6 +12,8 @@ const IndividualProject = ({ project }) => {
       direction={"row"}
       justifyContent="space-between"
       onClick={handleSetActiveProject}
+      mb="0.3rem"
+      sx={{ cursor: "pointer" }}
     >
       <Typography variant="caption">{projectTitle}</Typography>
     </Stack>

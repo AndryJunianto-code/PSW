@@ -11,8 +11,8 @@ function App() {
     <Router>
       <AuthProvider>
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/app" element={<MainHome />} />
+          {/* <Route path="/" element={<Home />} /> */}
+          <Route path="/" element={<MainHome />} />
         </Routes>
       </AuthProvider>
     </Router>

@@ -1,9 +1,9 @@
-import { Avatar, Box, Divider, Stack, Typography } from "@mui/material";
+import { Avatar, Box, Button, Divider, Stack, Typography } from "@mui/material";
 import React from "react";
 import ArrowDropDownOutlinedIcon from "@mui/icons-material/ArrowDropDownOutlined";
 import { useAuth0 } from "@auth0/auth0-react";
 const SidebarBottom = () => {
-  const { user } = useAuth0();
+  const { user, isAuthenticated, loginWithRedirect } = useAuth0();
   return (
     <Box position="fixed" width="14.2747%" sx={{ bottom: 7 }}>
       <Divider />
@@ -17,9 +17,12 @@ const SidebarBottom = () => {
             mr: "0.2rem",
           }}
         >
-          {user?.name}
+          {user?.name[0]}
         </Avatar>
         <ArrowDropDownOutlinedIcon sx={{ width: "15px" }} />
+        <Button onClick={() => loginWithRedirect()}>
+          {isAuthenticated ? "Logout" : "Login"}
+        </Button>
       </Stack>
     </Box>
   );

@@ -1,0 +1,209 @@
+import { Box, styled, Stack, Typography, Divider, Button } from "@mui/material";
+import React from "react";
+
+const NotifBox = styled(Box)(({ theme }) => ({
+  backgroundColor: "white",
+  padding: "1rem 0.5rem",
+  width: "50vw",
+  borderRadius: "6px",
+  marginBottom: "1rem",
+}));
+const Notification = () => {
+  return (
+    <>
+      <Box
+        borderBottom={"1px solid #f0f0f0"}
+        pl="0.8rem"
+        py="0.8rem"
+        position="fixed"
+      >
+        <Typography
+          variant="body1"
+          fontWeight="600"
+          fontSize="1rem"
+          pl="0.5rem"
+        >
+          Notification
+        </Typography>
+      </Box>
+      <Stack
+        backgroundColor="#f0f0f0"
+        mt="3.2rem"
+        height="100vh"
+        pt="1rem"
+        width="100%"
+        display="flex"
+        alignItems="center"
+        flex-direction="column"
+      >
+        <NotifBox>
+          <Stack>
+            <Typography
+              variant="caption"
+              sx={{
+                width: "30%",
+                maxWidth: "100%",
+                border: "1px solid #fafbfc",
+                backgroundColor: "#074354",
+                color: "white",
+                borderRadius: "4px",
+                padding: "0.1rem 0.5rem",
+              }}
+            >
+              Life ^ personal
+            </Typography>
+            <Typography
+              mt="0.4rem"
+              fontWeight="600"
+              fontSize="1rem"
+              pl="0.5rem"
+            >
+              {" "}
+              Finish UI/UX Design
+            </Typography>
+          </Stack>
+          <Divider sx={{ my: "0.6rem" }} />
+          <Stack
+            direction="row"
+            alignItems="center"
+            justifyContent="space-between"
+          >
+            <Stack direction="row" alignItems="center">
+              <Button
+                variant="caption"
+                sx={{
+                  backgroundColor: "red",
+                  fontSize: "0.6rem",
+                  borderRadius: "20px",
+                  padding: "0.1rem",
+                  color: "white",
+                  mr: "1rem",
+                }}
+              >
+                Overdue
+              </Button>
+              <Typography variant="caption" sx={{ color: "red" }}>
+                Feb 21
+              </Typography>
+            </Stack>
+            <Typography variant="caption" color="gray.fontMDark">
+              Feb 22 at 12.14 am
+            </Typography>
+          </Stack>
+        </NotifBox>
+        <NotifBox>
+          <Stack>
+            <Typography
+              variant="caption"
+              sx={{
+                width: "30%",
+                maxWidth: "100%",
+                border: "1px solid #fafbfc",
+                backgroundColor: "#2980b9",
+                color: "white",
+                borderRadius: "4px",
+                padding: "0.1rem 0.5rem",
+              }}
+            >
+              Life ^ work
+            </Typography>
+            <Typography
+              mt="0.4rem"
+              fontWeight="600"
+              fontSize="1rem"
+              pl="0.5rem"
+            >
+              {" "}
+              Searching for talents
+            </Typography>
+          </Stack>
+          <Divider sx={{ my: "0.6rem" }} />
+          <Stack
+            direction="row"
+            alignItems="center"
+            justifyContent="space-between"
+          >
+            <Stack direction="row" alignItems="center">
+              <Button
+                variant="caption"
+                sx={{
+                  backgroundColor: "red",
+                  fontSize: "0.6rem",
+                  borderRadius: "20px",
+                  padding: "0.1rem",
+                  color: "white",
+                  mr: "1rem",
+                }}
+              >
+                Overdue
+              </Button>
+              <Typography variant="caption" sx={{ color: "red" }}>
+                Feb 19
+              </Typography>
+            </Stack>
+            <Typography variant="caption" color="gray.fontMDark">
+              Feb 22 at 12.14 am
+            </Typography>
+          </Stack>
+        </NotifBox>
+        <NotifBox>
+          <Stack>
+            <Typography
+              variant="caption"
+              sx={{
+                width: "30%",
+                maxWidth: "100%",
+                border: "1px solid #fafbfc",
+                backgroundColor: "#2980b9",
+                color: "white",
+                borderRadius: "4px",
+                padding: "0.1rem 0.5rem",
+              }}
+            >
+              Life ^ work
+            </Typography>
+            <Typography
+              mt="0.4rem"
+              fontWeight="600"
+              fontSize="1rem"
+              pl="0.5rem"
+            >
+              {" "}
+              Finish UI/UX Design
+            </Typography>
+          </Stack>
+          <Divider sx={{ my: "0.6rem" }} />
+          <Stack
+            direction="row"
+            alignItems="center"
+            justifyContent="space-between"
+          >
+            <Stack direction="row" alignItems="center">
+              <Button
+                variant="caption"
+                sx={{
+                  backgroundColor: "#7b68ee",
+                  fontSize: "0.6rem",
+                  borderRadius: "20px",
+                  padding: "0.1rem",
+                  color: "white",
+                  mr: "1rem",
+                }}
+              >
+                Overdue
+              </Button>
+              <Typography variant="caption" sx={{ color: "red" }}>
+                Feb 21
+              </Typography>
+            </Stack>
+            <Typography variant="caption" color="gray.fontMDark">
+              Feb 22 at 12.14 am
+            </Typography>
+          </Stack>
+        </NotifBox>
+      </Stack>
+    </>
+  );
+};
+
+export default Notification;
