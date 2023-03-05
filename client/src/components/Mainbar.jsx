@@ -6,9 +6,9 @@ import Subbar from "./Subbar";
 import BoardView from "./BoardView";
 import CalendarView from "./calendar/CalendarView";
 import Notification from "./notification/Notification";
+import { useDataContext } from "../context/Context";
 const Mainbar = () => {
-  const [viewMode, setViewMode] = useState("List");
-
+  const { viewMode } = useDataContext();
   return (
     <Box flex={12} minHeight="100vh">
       <Box position="fixed" width="100%" backgroundColor="white">
@@ -16,7 +16,7 @@ const Mainbar = () => {
           <Notification />
         ) : (
           <>
-            <Modebar viewMode={viewMode} setViewMode={setViewMode} />
+            <Modebar />
             <Subbar />
           </>
         )}

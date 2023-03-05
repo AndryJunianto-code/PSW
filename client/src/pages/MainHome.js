@@ -3,11 +3,13 @@ import { Box, Fab, Stack } from "@mui/material";
 import Sidebar from "../components/sidebar/Sidebar";
 import Mainbar from "../components/Mainbar";
 import AddIcon from "@mui/icons-material/Add";
+import MobileSidebar from "../components/sidebar/MobileSidebar";
 const MainHome = () => {
   const handleOpenNewTaskModal = () => {};
   return (
     <Box minHeight="100vh" height="100%" sx={{ overflowY: "hidden" }}>
       <Stack direction="row" justifyContent="space-between">
+        <MobileSidebar />
         <Sidebar />
         <Mainbar />
       </Stack>

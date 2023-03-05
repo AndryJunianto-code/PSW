@@ -13,15 +13,27 @@ import FormatListBulletedOutlinedIcon from "@mui/icons-material/FormatListBullet
 import GridViewOutlinedIcon from "@mui/icons-material/GridViewOutlined";
 import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined";
 import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
-import ShareOutlinedIcon from "@mui/icons-material/ShareOutlined";
+import KeyboardDoubleArrowRightOutlinedIcon from "@mui/icons-material/KeyboardDoubleArrowRightOutlined";
+import { useDataContext } from "../context/Context";
 
-const Modebar = ({ viewMode, setViewMode }) => {
+const Modebar = () => {
+  const { toggleDrawer, viewMode, setViewMode } = useDataContext();
   const handleChangeViewMode = (e, newValue) => {
     setViewMode(newValue);
   };
+
   return (
     <Box borderBottom={"1px solid #f0f0f0"} pl="0.8rem">
       <Stack direction="row" alignItems="center">
+        <KeyboardDoubleArrowRightOutlinedIcon
+          onClick={toggleDrawer(true)}
+          onKeyDown={toggleDrawer(true)}
+          sx={{
+            color: "primary.main",
+            mr: "1rem",
+            display: { xs: "flex", lg: "none" },
+          }}
+        />
         <Typography variant="body1" fontWeight="600">
           Work
         </Typography>

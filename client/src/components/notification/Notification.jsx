@@ -1,22 +1,35 @@
 import { Box, styled, Stack, Typography, Divider, Button } from "@mui/material";
 import React from "react";
+import KeyboardDoubleArrowRightOutlinedIcon from "@mui/icons-material/KeyboardDoubleArrowRightOutlined";
+import { useDataContext } from "../../context/Context";
 
 const NotifBox = styled(Box)(({ theme }) => ({
   backgroundColor: "white",
   padding: "1rem 0.5rem",
-  width: "50vw",
   borderRadius: "6px",
   marginBottom: "1rem",
 }));
 const Notification = () => {
+  const { toggleDrawer } = useDataContext();
   return (
     <>
-      <Box
+      <Stack
+        direction="row"
         borderBottom={"1px solid #f0f0f0"}
         pl="0.8rem"
         py="0.8rem"
         position="fixed"
+        alignItems="center"
       >
+        <KeyboardDoubleArrowRightOutlinedIcon
+          onClick={toggleDrawer(true)}
+          onKeyDown={toggleDrawer(true)}
+          sx={{
+            color: "primary.main",
+            mr: "0.7rem",
+            display: { xs: "flex", lg: "none" },
+          }}
+        />
         <Typography
           variant="body1"
           fontWeight="600"
@@ -25,18 +38,18 @@ const Notification = () => {
         >
           Notification
         </Typography>
-      </Box>
+      </Stack>
       <Stack
         backgroundColor="#f0f0f0"
         mt="3.2rem"
         height="100vh"
         pt="1rem"
-        width="100%"
         display="flex"
         alignItems="center"
         flex-direction="column"
+        sx={{ width: { xs: "100%", lg: "90%" } }}
       >
-        <NotifBox>
+        <NotifBox sx={{ width: { xs: "80vw", lg: "40vw" } }}>
           <Stack>
             <Typography
               variant="caption"
@@ -58,7 +71,6 @@ const Notification = () => {
               fontSize="1rem"
               pl="0.5rem"
             >
-              {" "}
               Finish UI/UX Design
             </Typography>
           </Stack>
@@ -91,7 +103,7 @@ const Notification = () => {
             </Typography>
           </Stack>
         </NotifBox>
-        <NotifBox>
+        <NotifBox sx={{ width: { xs: "80vw", lg: "40vw" } }}>
           <Stack>
             <Typography
               variant="caption"
@@ -146,7 +158,7 @@ const Notification = () => {
             </Typography>
           </Stack>
         </NotifBox>
-        <NotifBox>
+        <NotifBox sx={{ width: { xs: "80vw", lg: "40vw" } }}>
           <Stack>
             <Typography
               variant="caption"

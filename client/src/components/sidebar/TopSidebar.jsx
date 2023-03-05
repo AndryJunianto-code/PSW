@@ -9,8 +9,11 @@ import {
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
 import React from "react";
+import { useDataContext } from "../../context/Context";
 
 const TopSidebar = () => {
+  const { setViewMode } = useDataContext();
+  const goToNotification = () => setViewMode("Notification");
   return (
     <List>
       <ListItem disablePadding>
@@ -27,7 +30,11 @@ const TopSidebar = () => {
           ></ListItemText>
         </ListItemButton>
       </ListItem>
-      <ListItem disablePadding sx={{ marginTop: "-0.5rem" }}>
+      <ListItem
+        disablePadding
+        sx={{ marginTop: "-0.5rem" }}
+        onClick={goToNotification}
+      >
         <ListItemButton disableGutters>
           <ListItemIcon>
             <NotificationsOutlinedIcon />

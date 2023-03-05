@@ -4,9 +4,11 @@ import { useDataContext } from "../../context/Context";
 
 const IndividualProject = ({ project }) => {
   const { projectTitle, projectId } = project;
-  const { setActiveProject } = useDataContext();
-  const handleSetActiveProject = () =>
+  const { setActiveProject, setViewMode } = useDataContext();
+  const handleSetActiveProject = () => {
     setActiveProject({ projectTitle, projectId });
+    setViewMode("List");
+  };
   return (
     <Stack
       direction={"row"}
