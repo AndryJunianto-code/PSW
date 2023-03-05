@@ -4,6 +4,7 @@ import Modebar from "./Modebar";
 import ListView from "./ListView";
 import Subbar from "./Subbar";
 import BoardView from "./BoardView";
+import CalendarView from "./calendar/CalendarView";
 const Mainbar = () => {
   const [viewMode, setViewMode] = useState("List");
 
@@ -17,6 +18,8 @@ const Mainbar = () => {
         <ListView />
       ) : viewMode === "Board" ? (
         <BoardView />
+      ) : viewMode === "Calendar" ? (
+        <CalendarView />
       ) : (
         ""
       )}
