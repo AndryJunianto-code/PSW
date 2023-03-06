@@ -58,7 +58,7 @@ const NewSpaceModal = ({
           top: "15rem",
           left: "50%",
           transform: "translate(-50%, -50%)",
-          width: { xs: "300px", md: "400px" },
+          width: { xs: "250px", md: "400px" },
           bgcolor: "background.paper",
           boxShadow: 24,
           borderRadius: "4px",

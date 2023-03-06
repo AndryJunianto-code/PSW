@@ -57,7 +57,7 @@ const Notification = () => {
                 width: "30%",
                 maxWidth: "100%",
                 border: "1px solid #fafbfc",
-                backgroundColor: "#074354",
+                backgroundColor: "#0034e3",
                 color: "white",
                 borderRadius: "4px",
                 padding: "0.1rem 0.5rem",
@@ -82,14 +82,14 @@ const Notification = () => {
           >
             <Stack direction="row" alignItems="center">
               <Button
-                variant="caption"
+              variant='outlined'
                 sx={{
-                  backgroundColor: "red",
+                  border:'1px solid red',
                   fontSize: "0.6rem",
                   borderRadius: "20px",
                   padding: "0.1rem",
-                  color: "white",
                   mr: "1rem",
+                  color:'red'
                 }}
               >
                 Overdue
@@ -111,7 +111,7 @@ const Notification = () => {
                 width: "30%",
                 maxWidth: "100%",
                 border: "1px solid #fafbfc",
-                backgroundColor: "#2980b9",
+                backgroundColor: "#fd7fa9",
                 color: "white",
                 borderRadius: "4px",
                 padding: "0.1rem 0.5rem",
@@ -136,15 +136,15 @@ const Notification = () => {
             justifyContent="space-between"
           >
             <Stack direction="row" alignItems="center">
-              <Button
-                variant="caption"
+               <Button
+              variant='outlined'
                 sx={{
-                  backgroundColor: "red",
+                  border:'1px solid red',
                   fontSize: "0.6rem",
                   borderRadius: "20px",
                   padding: "0.1rem",
-                  color: "white",
                   mr: "1rem",
+                  color:'red'
                 }}
               >
                 Overdue
@@ -166,7 +166,7 @@ const Notification = () => {
                 width: "30%",
                 maxWidth: "100%",
                 border: "1px solid #fafbfc",
-                backgroundColor: "#2980b9",
+                backgroundColor: "#fd7fa9",
                 color: "white",
                 borderRadius: "4px",
                 padding: "0.1rem 0.5rem",
@@ -191,20 +191,20 @@ const Notification = () => {
             justifyContent="space-between"
           >
             <Stack direction="row" alignItems="center">
-              <Button
-                variant="caption"
+               <Button
+              variant='outlined'
                 sx={{
-                  backgroundColor: "#7b68ee",
+                  border:'1px solid primary.main',
                   fontSize: "0.6rem",
                   borderRadius: "20px",
                   padding: "0.1rem",
-                  color: "white",
                   mr: "1rem",
+                  color:'primary.main'
                 }}
               >
                 Pending
               </Button>
-              <Typography variant="caption" sx={{ color: "red" }}>
+              <Typography variant="caption" sx={{ color: "primary.main" }}>
                 Feb 21
               </Typography>
             </Stack>

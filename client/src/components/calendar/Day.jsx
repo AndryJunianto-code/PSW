@@ -34,6 +34,7 @@ const Day = ({ day, rowIdx, idx }) => {
                 py: "0.1rem",
                 borderRadius: "2px",
                 fontSize: "0.8rem",
+                overflow:'hidden'
               }}
             >
               Meet with friends
@@ -47,6 +48,7 @@ const Day = ({ day, rowIdx, idx }) => {
                 py: "0.1rem",
                 borderRadius: "2px",
                 fontSize: "0.8rem",
+                overflow:'hidden'
               }}
             >
               Swimming
@@ -60,6 +62,7 @@ const Day = ({ day, rowIdx, idx }) => {
                 py: "0.1rem",
                 borderRadius: "2px",
                 fontSize: "0.8rem",
+                overflow:'hidden'
               }}
             >
               Workout
