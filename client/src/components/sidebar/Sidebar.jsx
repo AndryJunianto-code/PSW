@@ -23,10 +23,9 @@ const Sidebar = () => {
             justifyContent="space-between"
             alignItems="center"
           >
-            <Typography variant="h6">TaskInk</Typography>
-            <IconButton>
-              <KeyboardDoubleArrowLeftOutlinedIcon color="primary" />
-            </IconButton>
+            <Typography variant="h6" fontWeight="600" letterSpacing="0.1rem">
+              TaskInk
+            </Typography>
           </Stack>
           <TopSidebar />
         </Box>

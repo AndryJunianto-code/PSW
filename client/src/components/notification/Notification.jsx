@@ -202,7 +202,7 @@ const Notification = () => {
                   mr: "1rem",
                 }}
               >
-                Overdue
+                Pending
               </Button>
               <Typography variant="caption" sx={{ color: "red" }}>
                 Feb 21

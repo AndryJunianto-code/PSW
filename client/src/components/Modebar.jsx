@@ -35,7 +35,7 @@ const Modebar = () => {
           }}
         />
         <Typography variant="body1" fontWeight="600">
-          Work
+          Space
         </Typography>
         <Divider
           sx={{ marginX: "0.8rem" }}

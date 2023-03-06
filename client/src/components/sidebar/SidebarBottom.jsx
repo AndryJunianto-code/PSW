@@ -20,9 +20,13 @@ const SidebarBottom = () => {
           {user?.name[0]}
         </Avatar>
         <ArrowDropDownOutlinedIcon sx={{ width: "15px" }} />
-        <Button onClick={() => loginWithRedirect()}>
+        <Typography
+          ml="1rem"
+          fontSize="0.8rem"
+          onClick={() => loginWithRedirect()}
+        >
           {isAuthenticated ? "Logout" : "Login"}
-        </Button>
+        </Typography>
       </Stack>
     </Box>
   );

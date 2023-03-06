@@ -17,7 +17,7 @@ const IndividualProject = ({ project }) => {
       mb="0.3rem"
       sx={{ cursor: "pointer" }}
     >
-      <Typography variant="caption">{projectTitle}</Typography>
+      <Typography variant="caption">&#x2192; {projectTitle}</Typography>
     </Stack>
   );
 };

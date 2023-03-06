@@ -1,11 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import { Box, Fab, Stack } from "@mui/material";
 import Sidebar from "../components/sidebar/Sidebar";
 import Mainbar from "../components/Mainbar";
 import AddIcon from "@mui/icons-material/Add";
 import MobileSidebar from "../components/sidebar/MobileSidebar";
+import NewTaskModal from "../components/NewTaskModal";
 const MainHome = () => {
-  const handleOpenNewTaskModal = () => {};
+  const [openNewTaskModal, setOpenNewTaskModal] = useState(false);
+  const handleOpenNewTaskModal = () => setOpenNewTaskModal(true);
+  const handleCloseNewTaskModal = () => setOpenNewTaskModal(false);
+
   return (
     <Box minHeight="100vh" height="100%" sx={{ overflowY: "hidden" }}>
       <Stack direction="row" justifyContent="space-between">
