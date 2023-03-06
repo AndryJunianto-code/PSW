@@ -23,7 +23,7 @@ const Sidebar = () => {
             justifyContent="space-between"
             alignItems="center"
           >
-            <Typography>Logo</Typography>
+            <Typography variant="h6">TaskInk</Typography>
             <IconButton>
               <KeyboardDoubleArrowLeftOutlinedIcon color="primary" />
             </IconButton>

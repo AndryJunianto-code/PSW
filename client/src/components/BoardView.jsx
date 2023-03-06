@@ -10,18 +10,15 @@ const BoardView = () => {
     { id: "2", task: "running" },
     { id: "3", task: "drive" },
     { id: "4", task: "gym" },
-    { id: "5", task: "clean" },
-    { id: "6", task: "running" },
+    { id: "5", task: "sleep" },
+    { id: "6", task: "meet friend" },
     { id: "7", task: "drive" },
-    { id: "8", task: "gym" },
-    { id: "0", task: "clean" },
-    { id: "10", task: "running" },
-    { id: "11", task: "drive" },
-    { id: "12", task: "gym" },
-    { id: "13", task: "clean" },
-    { id: "14", task: "running" },
-    { id: "15", task: "drive" },
-    { id: "16", task: "gym" },
+    { id: "8", task: "drink" },
+    { id: "9", task: "club" },
+    { id: "10", task: "games" },
+    { id: "11", task: "work" },
+    { id: "12", task: "swim" },
+    { id: "13", task: "drive" },
   ]);
   const [completed, setCompleted] = useState([
     { id: "AA", task: "cleaning" },
@@ -30,8 +27,32 @@ const BoardView = () => {
 
   const handleDragEnd = (result) => {
     const { source, destination } = result;
-    console.log(source);
-    console.log(destination);
+    if (!destination) return;
+    if (
+      destination.droppableId === source.droppableId &&
+      destination.index === source.index
+    )
+      return;
+
+    let add;
+    let active = todos;
+    let complete = completed;
+    if (source.droppableId === "todo") {
+      add = active[source.index];
+      active.splice(source.index, 1);
+    } else {
+      add = complete[source.index];
+      complete.splice(source.index, 1);
+    }
+
+    if (destination.droppableId === "todo") {
+      active.splice(destination.index, 0, add);
+    } else {
+      complete.splice(destination.index, 0, add);
+    }
+
+    setCompleted(complete);
+    setTodos(active);
   };
   return (
     <Box backgroundColor="gray.bgLight" mt="7vh" height="93vh">
@@ -98,7 +119,7 @@ const BoardView = () => {
                     py="0.5rem"
                     mb="2rem"
                     borderRadius="4px"
-                    borderTop="1px solid red"
+                    borderTop="1px solid blue"
                     sx={{ boxShadow: "0px 3px #e8e8e8" }}
                   >
                     <Typography variant="body2" mr="1.5rem">
