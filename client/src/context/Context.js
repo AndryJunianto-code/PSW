@@ -6,7 +6,10 @@ const DataContextProvider = ({ children }) => {
   const [activeProject, setActiveProject] = useState("");
   const [openDrawer, setOpenDrawer] = useState(false);
   const [viewMode, setViewMode] = useState("List");
-
+  const [detailedTaskSelected, setDetailedTaskSelected] = useState({
+    task: "",
+    open: false,
+  });
   const toggleDrawer = (open) => (event) => {
     if (
       event.type === "keydown" &&
@@ -26,6 +29,8 @@ const DataContextProvider = ({ children }) => {
         viewMode,
         setViewMode,
         toggleDrawer,
+        detailedTaskSelected,
+        setDetailedTaskSelected,
       }}
     >
       {children}

@@ -1,8 +1,14 @@
 import { Box, Stack, Typography } from "@mui/material";
 import React from "react";
 import { Draggable } from "react-beautiful-dnd";
+import { useDataContext } from "../../context/Context";
 
 const IndividualListTask = ({ todo, index }) => {
+  const { setDetailedTaskSelected } = useDataContext();
+  const handleOpenDetailTask = () => {
+    setDetailedTaskSelected({ task: todo.task, open: true });
+    console.log(1321);
+  };
   return (
     <Draggable draggableId={todo.id.toString()} index={index}>
       {(provided) => (
@@ -14,6 +20,7 @@ const IndividualListTask = ({ todo, index }) => {
           mb="0.15rem"
           px="1rem"
           py="0.3rem"
+          onClick={handleOpenDetailTask}
         >
           <Stack
             direction="row"
