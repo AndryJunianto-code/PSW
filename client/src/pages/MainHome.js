@@ -6,6 +6,7 @@ import AddIcon from "@mui/icons-material/Add";
 import MobileSidebar from "../components/sidebar/MobileSidebar";
 import DetailedTaskModal from "../components/detailedtask/DetailedTaskModal";
 import { useDataContext } from "../context/Context";
+import NewListModal from "../components/listview/NewListModal";
 const MainHome = () => {
   const { detailedTaskSelected } = useDataContext();
   return (
@@ -24,6 +25,7 @@ const MainHome = () => {
         <AddIcon sx={{ width: "1.2rem" }} />
       </Fab>
       {detailedTaskSelected.open === true && <DetailedTaskModal />}
+      <NewListModal />
     </Box>
   );
 };

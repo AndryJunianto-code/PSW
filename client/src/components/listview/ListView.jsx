@@ -1,11 +1,11 @@
-import { Box, IconButton, Stack, Typography } from "@mui/material";
+import { Box, Button, IconButton, Stack, Typography } from "@mui/material";
 import { useState } from "react";
 import ArrowDropDownCircleOutlinedIcon from "@mui/icons-material/ArrowDropDownCircleOutlined";
 import ArrowRightOutlinedIcon from "@mui/icons-material/ArrowRightOutlined";
 import { DragDropContext } from "react-beautiful-dnd";
-import { ListDroppable } from "../utils/ListDroppable";
-import IndividualListTask from "./individual/IndividualListTask";
-import { useDataContext } from "../context/Context";
+import { ListDroppable } from "../../utils/ListDroppable";
+import IndividualListTask from "../individual/IndividualListTask";
+import { useDataContext } from "../../context/Context";
 
 const ListView = () => {
   const { activeProject } = useDataContext();
@@ -63,7 +63,19 @@ const ListView = () => {
       pt="0.4rem"
     >
       <DragDropContext onDragEnd={handleDragEnd}>
-        <Typography fontWeight="700">{activeProject.projectTitle}</Typography>
+        <Stack direction="row" alignItems="center">
+          <Typography fontWeight="700">{activeProject.projectTitle}</Typography>
+          <Typography
+            variant="caption"
+            color="gray.fontMDark"
+            fontWeight="500"
+            ml="1rem"
+            sx={{ cursor: "pointer" }}
+            onClick={"handleOpenNewStatusModal"}
+          >
+            + New status
+          </Typography>
+        </Stack>
         <Box mt="1.6rem">
           <Stack direction="row" justifyContent="space-between">
             <Stack direction="row" alignItems={"center"}>

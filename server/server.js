@@ -3,6 +3,7 @@ const dotenv = require("dotenv");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const spaceRoutes = require("./routes/SpaceRoutes");
+const listRoutes = require("./routes/ListRoutes");
 
 const app = express();
 dotenv.config();
@@ -24,6 +25,7 @@ mongoose
   .catch((err) => console.log(err));
 
 app.use("/api/spaces", spaceRoutes);
+app.use("/api/lists", listRoutes);
 
 app.listen(process.env.PORT || 5000, () => {
   console.log("backend is running");

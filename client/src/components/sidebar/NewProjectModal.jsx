@@ -61,7 +61,7 @@ const NewSpaceModal = ({
         }}
       >
         <Typography variant="h5" component="h1" textAlign="center">
-          Create new space
+          Create new project
         </Typography>
         <ClearIcon
           onClick={handleCloseNewProjectModal}
