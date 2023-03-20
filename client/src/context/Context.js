@@ -3,13 +3,17 @@ import React, { useContext, useState } from "react";
 const DataContext = React.createContext({});
 
 const DataContextProvider = ({ children }) => {
-  const [activeProject, setActiveProject] = useState("");
+  const [activeProject, setActiveProject] = useState({
+    projectTitle: "",
+    projectId: "",
+  });
   const [openDrawer, setOpenDrawer] = useState(false);
   const [viewMode, setViewMode] = useState("List");
   const [detailedTaskSelected, setDetailedTaskSelected] = useState({
     task: "",
     open: false,
   });
+  const [openNewListModal, setOpenNewListModal] = useState(false);
   const toggleDrawer = (open) => (event) => {
     if (
       event.type === "keydown" &&
@@ -31,6 +35,8 @@ const DataContextProvider = ({ children }) => {
         toggleDrawer,
         detailedTaskSelected,
         setDetailedTaskSelected,
+        openNewListModal,
+        setOpenNewListModal,
       }}
     >
       {children}

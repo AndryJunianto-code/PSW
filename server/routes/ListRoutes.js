@@ -3,6 +3,7 @@ const List = require("../models/List");
 
 //create new list
 router.post("/", async (req, res) => {
+  console.log(req.body);
   const newList = new List(req.body);
   try {
     const savedList = await newList.save();

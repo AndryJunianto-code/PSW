@@ -9,21 +9,33 @@ import {
   Grid,
 } from "@mui/material";
 import ClearIcon from "@mui/icons-material/Clear";
-import { v4 as uuidv4 } from "uuid";
 import { logoColor } from "../../utils/logoColor";
 import DoneIcon from "@mui/icons-material/Done";
+import { useDataContext } from "../../context/Context";
+import { useMutation } from "react-query";
+import { createList } from "../../request/listRequest";
 
 const NewListModal = ({}) => {
+  const { openNewListModal, setOpenNewListModal, activeProject } =
+    useDataContext();
   const [listColor, setListColor] = useState("#40bc86");
   const [listTitle, setListTitle] = useState("");
 
-  const handleListTitle = (e) => {
-    setListTitle(e.target.value);
+  const { mutate: mutateList } = useMutation(createList, {
+    onSuccess: (data) => {
+      setOpenNewListModal(false);
+    },
+  });
+
+  const handleListTitle = (e) => setListTitle(e.target.value);
+  const handleCloseNewListModal = () => setOpenNewListModal(false);
+  const handleCreateNewList = () => {
+    mutateList({ listTitle, projectId: activeProject.projectId });
   };
   return (
     <Modal
-      open={true}
-      onClose={""}
+      open={openNewListModal}
+      onClose={handleCloseNewListModal}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
@@ -44,7 +56,7 @@ const NewListModal = ({}) => {
           Create new list
         </Typography>
         <ClearIcon
-          onClick={""}
+          onClick={handleCloseNewListModal}
           sx={{
             top: "-1.7rem",
             position: "relative",
@@ -58,8 +70,8 @@ const NewListModal = ({}) => {
             List name
           </Typography>
           <InputBase
-            onChange={""}
-            value={""}
+            onChange={handleListTitle}
+            value={listTitle}
             placeholder="Enter List name"
             required
             sx={{ borderBottom: "1px solid #e4e4e4" }}
@@ -100,7 +112,7 @@ const NewListModal = ({}) => {
           </Stack>
         </Stack>
         <Button
-          onClick={""}
+          onClick={handleCreateNewList}
           variant="contained"
           sx={{
             marginTop: "2rem",

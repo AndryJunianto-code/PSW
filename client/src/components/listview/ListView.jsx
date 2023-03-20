@@ -8,7 +8,7 @@ import IndividualListTask from "../individual/IndividualListTask";
 import { useDataContext } from "../../context/Context";
 
 const ListView = () => {
-  const { activeProject } = useDataContext();
+  const { activeProject, setOpenNewListModal } = useDataContext();
   const [todos, setTodos] = useState([
     { id: "1", task: "clean" },
     { id: "2", task: "running" },
@@ -20,9 +20,8 @@ const ListView = () => {
     { id: "BB", task: "makan" },
   ]);
   const [isListOpen, setIsListOpen] = useState(true);
-  const handleOpenList = () => {
-    setIsListOpen(!isListOpen);
-  };
+  const handleOpenList = () => setIsListOpen(!isListOpen);
+  const handleOpenNewListModal = () => setOpenNewListModal(true);
   const handleDragEnd = (result) => {
     const { source, destination } = result;
     if (!destination) return;
@@ -71,9 +70,9 @@ const ListView = () => {
             fontWeight="500"
             ml="1rem"
             sx={{ cursor: "pointer" }}
-            onClick={"handleOpenNewStatusModal"}
+            onClick={handleOpenNewListModal}
           >
-            + New status
+            + New list
           </Typography>
         </Stack>
         <Box mt="1.6rem">
