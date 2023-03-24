@@ -3,14 +3,14 @@ import React from "react";
 import { Draggable } from "react-beautiful-dnd";
 import { useDataContext } from "../../context/Context";
 
-const IndividualListTask = ({ todo, index }) => {
+const IndividualTask = ({ task, index }) => {
+  const { taskTitle, taskId } = task;
   const { setDetailedTaskSelected } = useDataContext();
   const handleOpenDetailTask = () => {
-    setDetailedTaskSelected({ task: todo.task, open: true });
-    console.log(1321);
+    setDetailedTaskSelected({ task: taskTitle, open: true });
   };
   return (
-    <Draggable draggableId={todo.id.toString()} index={index}>
+    <Draggable draggableId={taskId.toString()} index={index}>
       {(provided) => (
         <Box
           {...provided.draggableProps}
@@ -27,7 +27,7 @@ const IndividualListTask = ({ todo, index }) => {
             alignItems="center"
             justifyContent="space-between"
           >
-            <Typography variant="body2">{todo.task}</Typography>
+            <Typography fontSize="0.8rem">{taskTitle}</Typography>
             <Typography variant="caption">Mar 6</Typography>
           </Stack>
         </Box>
@@ -36,4 +36,4 @@ const IndividualListTask = ({ todo, index }) => {
   );
 };
 
-export default IndividualListTask;
+export default IndividualTask;
