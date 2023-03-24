@@ -10,20 +10,19 @@ import { v4 } from "uuid";
 
 const IndividualList = ({ list, listRefetch }) => {
   const { listTitle, tasks, _id } = list;
+  const [isListDropOpen, setIsListDropOpen] = useState(true);
   const [newTaskInputTitle, setNewTaskInputTitle] = useState("");
   const [isEditingTaskMode, setIsEditingTaskMode] = useState(false);
-  const [todos, setTodos] = useState([
-    { id: "1", task: "clean" },
-    { id: "2", task: "running" },
-    { id: "3", task: "drive" },
-    { id: "4", task: "gym" },
-  ]);
+
   const { mutate: mutateNewTask } = useMutation(createTask, {
     onSuccess: (data) => {
       setIsEditingTaskMode(false);
       listRefetch();
     },
   });
+  const handleToggleListDrop = () => {
+    setIsListDropOpen(!isListDropOpen);
+  };
   const handleNewTaskInputTitle = (e) => {
     setNewTaskInputTitle(e.target.value);
   };
@@ -44,8 +43,8 @@ const IndividualList = ({ list, listRefetch }) => {
     <Box mt="1.6rem">
       <Stack direction="row" justifyContent="space-between">
         <Stack direction="row" alignItems={"center"}>
-          <Box onClick={"handleOpenList"}>
-            {1 + 1 === 2 ? (
+          <Box onClick={handleToggleListDrop}>
+            {isListDropOpen ? (
               <ArrowDropDownCircleOutlinedIcon
                 sx={{ width: "1.1rem", color: "primary.main" }}
               />
@@ -86,50 +85,52 @@ const IndividualList = ({ list, listRefetch }) => {
           Due Date
         </Typography>
       </Stack>
-      <ListDroppable droppableId={_id}>
-        {(provided) => (
-          <Box
-            mx="1.4rem"
-            ref={provided.innerRef}
-            {...provided.droppableProps}
-            sx={{ display: `${"isListOpen" ? "block" : "none"}` }}
-          >
-            {tasks?.map((task, index) => (
-              <IndividualTask index={index} task={task} key={task.taskId} />
-            ))}
-            {!isEditingTaskMode ? (
-              <Typography
-                variant="caption"
-                color="gray.fontMDark"
-                fontWeight="500"
-                ml="1rem"
-                sx={{ cursor: "pointer" }}
-                onClick={handleEditingTaskMode}
-              >
-                + New task
-              </Typography>
-            ) : (
-              <InputBase
-                value={newTaskInputTitle}
-                onChange={handleNewTaskInputTitle}
-                placeholder="+ New task"
-                fullWidth="true"
-                autoFocus="true"
-                sx={{
-                  border: "1px solid #A084DC",
-                  borderRadius: "3px",
-                  paddingX: "1rem",
-                  backgroundColor: "white",
-                }}
-                onBlur={handleEditingTaskMode}
-                onKeyDown={handleCreateNewTask}
-              />
-            )}
+      {isListDropOpen && (
+        <ListDroppable droppableId={_id}>
+          {(provided) => (
+            <Box
+              mx="1.4rem"
+              ref={provided.innerRef}
+              {...provided.droppableProps}
+              sx={{ display: `${"isListOpen" ? "block" : "none"}` }}
+            >
+              {tasks?.map((task, index) => (
+                <IndividualTask index={index} task={task} key={task.taskId} />
+              ))}
+              {!isEditingTaskMode ? (
+                <Typography
+                  variant="caption"
+                  color="gray.fontMDark"
+                  fontWeight="500"
+                  ml="1rem"
+                  sx={{ cursor: "pointer" }}
+                  onClick={handleEditingTaskMode}
+                >
+                  + New task
+                </Typography>
+              ) : (
+                <InputBase
+                  value={newTaskInputTitle}
+                  onChange={handleNewTaskInputTitle}
+                  placeholder="+ New task"
+                  fullWidth="true"
+                  autoFocus="true"
+                  sx={{
+                    border: "1px solid #A084DC",
+                    borderRadius: "3px",
+                    paddingX: "1rem",
+                    backgroundColor: "white",
+                  }}
+                  onBlur={handleEditingTaskMode}
+                  onKeyDown={handleCreateNewTask}
+                />
+              )}
 
-            {provided.placeholder}
-          </Box>
-        )}
-      </ListDroppable>
+              {provided.placeholder}
+            </Box>
+          )}
+        </ListDroppable>
+      )}
     </Box>
   );
 };

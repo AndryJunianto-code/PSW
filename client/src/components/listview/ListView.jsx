@@ -3,18 +3,14 @@ import { useState } from "react";
 import { DragDropContext } from "react-beautiful-dnd";
 import { useDataContext } from "../../context/Context";
 import IndividualList from "../individual/IndividualList";
-import { useQuery } from "react-query";
-import { fetchAllListsInProject } from "../../request/listRequest";
+import { useMutation, useQuery } from "react-query";
+import {
+  changeTaskPositionWithinList,
+  fetchAllListsInProject,
+} from "../../request/listRequest";
 
 const ListView = () => {
   const { activeProject, setOpenNewListModal } = useDataContext();
-
-  const [completed, setCompleted] = useState([
-    { id: "AA", task: "cleaning" },
-    { id: "BB", task: "makan" },
-  ]);
-  const [isListOpen, setIsListOpen] = useState(true);
-  const handleOpenList = () => setIsListOpen(!isListOpen);
   const handleOpenNewListModal = () => setOpenNewListModal(true);
 
   const {
@@ -27,10 +23,44 @@ const ListView = () => {
     { retryDelay: 3000 }
   );
 
-  const handleDragEnd = (result) => {
-    const { source, destination } = result;
-    console.log(source);
-    console.log(destination);
+  const { mutate: mutateTaskPositionWithinList } = useMutation(
+    changeTaskPositionWithinList,
+    {
+      onSuccess: (data) => {
+        console.log(data);
+      },
+    }
+  );
+
+  const handleDragEnd = (result, listData) => {
+    const { source, destination, draggableId } = result;
+    if (!destination) return;
+    const sourceList = listData.filter(
+      (list) => list._id === source.droppableId
+    )[0];
+    const destinationList = listData.filter(
+      (list) => list._id === destination.droppableId
+    )[0];
+    console.log(sourceList);
+    console.log(destinationList);
+    const indexOfSourceList = listData.indexOf(sourceList);
+    const indexOfDestinationList = listData.indexOf(destinationList);
+    const draggingCard = sourceList.tasks.filter(
+      (task) => task.taskId === draggableId
+    )[0];
+
+    sourceList.tasks.splice(source.index, 1);
+    destinationList.tasks.splice(destination.index, 0, draggingCard);
+    if (source.droppableId !== destination.droppableId) {
+      mutateTaskPositionWithinList({
+        listId: source.droppableId,
+        newTasks: listData[indexOfSourceList].tasks,
+      });
+    }
+    mutateTaskPositionWithinList({
+      listId: destination.droppableId,
+      newTasks: listData[indexOfDestinationList].tasks,
+    });
   };
 
   return (
@@ -44,7 +74,7 @@ const ListView = () => {
       pl="0.8rem"
       pt="0.4rem"
     >
-      <DragDropContext onDragEnd={handleDragEnd}>
+      <DragDropContext onDragEnd={(result) => handleDragEnd(result, listData)}>
         <Stack direction="row" alignItems="center">
           <Typography fontWeight="700">{activeProject.projectTitle}</Typography>
           <Typography

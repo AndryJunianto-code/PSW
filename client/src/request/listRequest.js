@@ -26,3 +26,12 @@ export const createTask = async (obj) => {
   });
   return data;
 };
+
+//change task position within list
+export const changeTaskPositionWithinList = async (obj) => {
+  const { data } = await axios.put("/lists/changeTaskPositionWithinList", {
+    listId: obj.listId,
+    newTasks: obj.newTasks,
+  });
+  return data;
+};

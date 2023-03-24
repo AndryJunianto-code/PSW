@@ -45,4 +45,23 @@ router.put("/addNewTask", async (req, res) => {
   }
 });
 
+//change task position within list
+router.put("/changeTaskPositionWithinList", async (req, res) => {
+  const { listId, newTasks } = req.body;
+  try {
+    const list = await List.findByIdAndUpdate(
+      listId,
+      {
+        $set: {
+          tasks: newTasks,
+        },
+      },
+      { new: true }
+    );
+    res.status(200).json(list);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
 module.exports = router;
