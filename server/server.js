@@ -6,7 +6,7 @@ const spaceRoutes = require("./routes/SpaceRoutes");
 const listRoutes = require("./routes/ListRoutes");
 
 const app = express();
-const http = require("http").createServer().listen(8900);
+const http = require("http").Server(app);
 const socketIO = require("socket.io")(http, {
   cors: {
     origin: "*",
@@ -33,7 +33,7 @@ mongoose
 app.use("/api/spaces", spaceRoutes);
 app.use("/api/lists", listRoutes);
 
-app.listen(process.env.PORT || 5000, () => {
+http.listen(process.env.PORT || 5000, () => {
   console.log("backend is running");
 });
 
