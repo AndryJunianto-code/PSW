@@ -2,12 +2,14 @@ const express = require("express");
 const dotenv = require("dotenv");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const http = require("http");
+const socketIO = require("socket.io");
 const spaceRoutes = require("./routes/SpaceRoutes");
 const listRoutes = require("./routes/ListRoutes");
 
 const app = express();
-const http = require("http").Server(app);
-const socketIO = require("socket.io")(http, {
+const server = http.createServer(app);
+const io = socketIO(server, {
   cors: {
     origin: "*",
   },
@@ -33,14 +35,14 @@ mongoose
 app.use("/api/spaces", spaceRoutes);
 app.use("/api/lists", listRoutes);
 
-http.listen(process.env.PORT || 5000, () => {
-  console.log("backend is running");
-});
-
-socketIO.on("connection", (socket) => {
+io.on("connection", (socket) => {
   console.log(`${socket.id} user just connected`);
 
   socket.on("changePositionListData", (listData) => {
-    socketIO.emit("changePositionListData", listData);
+    io.emit("changePositionListData", listData);
   });
+});
+
+server.listen(process.env.PORT || 5000, () => {
+  console.log("backend is running");
 });
