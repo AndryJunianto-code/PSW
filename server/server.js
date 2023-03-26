@@ -41,6 +41,10 @@ io.on("connection", (socket) => {
   socket.on("changePositionListData", (listData) => {
     io.emit("changePositionListData", listData);
   });
+
+  socket.on("createNewList", (data) => {
+    io.emit("createNewList", data);
+  });
 });
 
 server.listen(process.env.PORT || 5000, () => {

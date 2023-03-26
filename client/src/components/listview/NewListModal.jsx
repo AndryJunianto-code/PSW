@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Typography,
@@ -14,11 +14,14 @@ import DoneIcon from "@mui/icons-material/Done";
 import { useDataContext } from "../../context/Context";
 import { useMutation, useQueryClient } from "react-query";
 import { createList } from "../../request/listRequest";
+import { useSocketContext } from "../../context/socketContext";
+import { useListContext } from "../../context/listContext";
 
 const NewListModal = () => {
+  const { socket } = useSocketContext();
+  const { setAllList } = useListContext();
   const { openNewListModal, setOpenNewListModal, activeProject } =
     useDataContext();
-  const queryClient = useQueryClient();
   const [listColor, setListColor] = useState("#40bc86");
   const [listTitle, setListTitle] = useState("");
 
@@ -26,7 +29,7 @@ const NewListModal = () => {
     onSuccess: (data) => {
       setOpenNewListModal(false);
       setListTitle("");
-      queryClient.invalidateQueries({ queryKey: ["getAllListsInProject"] });
+      socket.emit("createNewList", data);
     },
   });
 
@@ -35,6 +38,14 @@ const NewListModal = () => {
   const handleCreateNewList = () => {
     mutateList({ listTitle, projectId: activeProject.projectId });
   };
+
+  useEffect(() => {
+    socket.on("createNewList", (data) => {
+      console.log(data);
+      setAllList((list) => [...list, data]);
+    });
+    return () => socket.off("createNewList");
+  }, [socket]);
   return (
     <Modal
       open={openNewListModal}

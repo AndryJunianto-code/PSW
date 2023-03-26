@@ -10,13 +10,13 @@ import {
 } from "../../request/listRequest";
 import NewListModal from "./NewListModal";
 import { useSocketContext } from "../../context/socketContext";
+import { useListContext } from "../../context/listContext";
 
 const ListView = () => {
   const { activeProject, setOpenNewListModal } = useDataContext();
   const { socket } = useSocketContext();
-  const queryClient = useQueryClient();
+  const { allList, setAllList } = useListContext();
   const handleOpenNewListModal = () => setOpenNewListModal(true);
-  const [allList, setAllList] = useState([]);
   const {
     data: listData,
     isSuccess: listSuccess,
@@ -43,12 +43,11 @@ const ListView = () => {
     const indexOfSourceList = listData.indexOf(sourceList);
     const indexOfDestinationList = listData.indexOf(destinationList);
     const draggingCard = sourceList.tasks.filter(
-      (task) => task.taskId === draggableId
+      (task) => task?.taskId === draggableId
     )[0];
 
     sourceList.tasks.splice(source.index, 1);
     destinationList.tasks.splice(destination.index, 0, draggingCard);
-    socket.emit("changePositionListData", listData);
     if (source.droppableId !== destination.droppableId) {
       mutateTaskPositionWithinList({
         listId: source.droppableId,
@@ -59,16 +58,18 @@ const ListView = () => {
       listId: destination.droppableId,
       newTasks: listData[indexOfDestinationList].tasks,
     });
+    socket.emit("changePositionListData", listData);
   };
 
   useEffect(() => {
-    socket.on("changePositionListData", (data) =>
-      queryClient.invalidateQueries({ queryKey: ["getAllListsInProject"] })
-    );
+    socket.on("changePositionListData", (data) => {
+      setAllList(data);
+    });
+    return () => socket.off("changePositionListData");
   }, [socket]);
   useEffect(() => {
-    listSuccess && setAllList(listData);
-  }, [listSuccess]);
+    listData && setAllList(listData);
+  }, [listSuccess, listData]);
   return (
     <Box
       backgroundColor="gray.bgLight"
@@ -80,7 +81,7 @@ const ListView = () => {
       pl="0.8rem"
       pt="0.4rem"
     >
-      <DragDropContext onDragEnd={(result) => handleDragEnd(result, listData)}>
+      <DragDropContext onDragEnd={(result) => handleDragEnd(result, allList)}>
         <Stack direction="row" alignItems="center">
           <Typography fontWeight="700">{activeProject.projectTitle}</Typography>
           <Typography
@@ -95,8 +96,12 @@ const ListView = () => {
           </Typography>
         </Stack>
         {listSuccess &&
-          listData.map((list) => (
-            <IndividualList list={list} listRefetch={listRefetch} />
+          allList.map((list) => (
+            <IndividualList
+              list={list}
+              listRefetch={listRefetch}
+              key={list._id}
+            />
           ))}
       </DragDropContext>
       <NewListModal />

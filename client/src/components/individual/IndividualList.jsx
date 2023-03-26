@@ -94,9 +94,17 @@ const IndividualList = ({ list, listRefetch }) => {
               {...provided.droppableProps}
               sx={{ display: `${"isListOpen" ? "block" : "none"}` }}
             >
-              {tasks?.map((task, index) => (
-                <IndividualTask index={index} task={task} key={task.taskId} />
-              ))}
+              {tasks !== null &&
+                tasks?.map(
+                  (task, index) =>
+                    task !== null && (
+                      <IndividualTask
+                        index={index}
+                        task={task}
+                        key={task?.taskId}
+                      />
+                    )
+                )}
               {!isEditingTaskMode ? (
                 <Typography
                   variant="caption"
