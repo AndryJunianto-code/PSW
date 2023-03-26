@@ -1,18 +1,22 @@
 import { Box, Stack, Typography } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { DragDropContext } from "react-beautiful-dnd";
 import { useDataContext } from "../../context/Context";
 import IndividualList from "../individual/IndividualList";
-import { useMutation, useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import {
   changeTaskPositionWithinList,
   fetchAllListsInProject,
 } from "../../request/listRequest";
+import NewListModal from "./NewListModal";
+import { useSocketContext } from "../../context/socketContext";
 
 const ListView = () => {
   const { activeProject, setOpenNewListModal } = useDataContext();
+  const { socket } = useSocketContext();
+  const queryClient = useQueryClient();
   const handleOpenNewListModal = () => setOpenNewListModal(true);
-
+  const [allList, setAllList] = useState([]);
   const {
     data: listData,
     isSuccess: listSuccess,
@@ -24,12 +28,7 @@ const ListView = () => {
   );
 
   const { mutate: mutateTaskPositionWithinList } = useMutation(
-    changeTaskPositionWithinList,
-    {
-      onSuccess: (data) => {
-        console.log(data);
-      },
-    }
+    changeTaskPositionWithinList
   );
 
   const handleDragEnd = (result, listData) => {
@@ -41,8 +40,6 @@ const ListView = () => {
     const destinationList = listData.filter(
       (list) => list._id === destination.droppableId
     )[0];
-    console.log(sourceList);
-    console.log(destinationList);
     const indexOfSourceList = listData.indexOf(sourceList);
     const indexOfDestinationList = listData.indexOf(destinationList);
     const draggingCard = sourceList.tasks.filter(
@@ -51,6 +48,7 @@ const ListView = () => {
 
     sourceList.tasks.splice(source.index, 1);
     destinationList.tasks.splice(destination.index, 0, draggingCard);
+    socket.emit("changePositionListData", listData);
     if (source.droppableId !== destination.droppableId) {
       mutateTaskPositionWithinList({
         listId: source.droppableId,
@@ -63,6 +61,14 @@ const ListView = () => {
     });
   };
 
+  useEffect(() => {
+    socket.on("changePositionListData", (data) =>
+      queryClient.invalidateQueries({ queryKey: ["getAllListsInProject"] })
+    );
+  }, [socket]);
+  useEffect(() => {
+    listSuccess && setAllList(listData);
+  }, [listSuccess]);
   return (
     <Box
       backgroundColor="gray.bgLight"
@@ -93,6 +99,7 @@ const ListView = () => {
             <IndividualList list={list} listRefetch={listRefetch} />
           ))}
       </DragDropContext>
+      <NewListModal />
     </Box>
   );
 };

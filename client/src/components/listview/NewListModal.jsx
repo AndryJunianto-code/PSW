@@ -12,18 +12,21 @@ import ClearIcon from "@mui/icons-material/Clear";
 import { logoColor } from "../../utils/logoColor";
 import DoneIcon from "@mui/icons-material/Done";
 import { useDataContext } from "../../context/Context";
-import { useMutation } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 import { createList } from "../../request/listRequest";
 
-const NewListModal = ({}) => {
+const NewListModal = () => {
   const { openNewListModal, setOpenNewListModal, activeProject } =
     useDataContext();
+  const queryClient = useQueryClient();
   const [listColor, setListColor] = useState("#40bc86");
   const [listTitle, setListTitle] = useState("");
 
   const { mutate: mutateList } = useMutation(createList, {
     onSuccess: (data) => {
       setOpenNewListModal(false);
+      setListTitle("");
+      queryClient.invalidateQueries({ queryKey: ["getAllListsInProject"] });
     },
   });
 

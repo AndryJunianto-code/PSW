@@ -7,16 +7,20 @@ import { theme } from "./theme";
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import axios from "axios";
 import { DataContextProvider } from "./context/Context";
+import { SocketProvider } from "./context/socketContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 const queryClient = new QueryClient();
-axios.defaults.baseURL = "http://localhost:5000/api";
+axios.defaults.baseURL =
+  /* "http://localhost:5000/api"; */ "https://psw-production.up.railway.app/api/";
 root.render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>
       <QueryClientProvider client={queryClient}>
         <DataContextProvider>
-          <App />
+          <SocketProvider>
+            <App />
+          </SocketProvider>
         </DataContextProvider>
       </QueryClientProvider>
     </ThemeProvider>

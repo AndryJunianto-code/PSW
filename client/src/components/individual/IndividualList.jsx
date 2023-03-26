@@ -16,8 +16,8 @@ const IndividualList = ({ list, listRefetch }) => {
 
   const { mutate: mutateNewTask } = useMutation(createTask, {
     onSuccess: (data) => {
-      setIsEditingTaskMode(false);
       listRefetch();
+      setNewTaskInputTitle("");
     },
   });
   const handleToggleListDrop = () => {
