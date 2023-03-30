@@ -1,25 +1,32 @@
 import { Box, InputBase, Stack, Typography } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ArrowDropDownCircleOutlinedIcon from "@mui/icons-material/ArrowDropDownCircleOutlined";
 import ArrowRightOutlinedIcon from "@mui/icons-material/ArrowRightOutlined";
 import { ListDroppable } from "../../utils/ListDroppable";
 import IndividualTask from "./IndividualTask";
-import { useMutation } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 import { createTask } from "../../request/listRequest";
 import { v4 } from "uuid";
+import { useSocketContext } from "../../context/socketContext";
 
-const IndividualList = ({ list, listRefetch }) => {
+const IndividualList = ({ list }) => {
   const { listTitle, tasks, _id } = list;
+  const queryClient = useQueryClient();
+  const { socket } = useSocketContext();
   const [isListDropOpen, setIsListDropOpen] = useState(true);
   const [newTaskInputTitle, setNewTaskInputTitle] = useState("");
   const [isEditingTaskMode, setIsEditingTaskMode] = useState(false);
 
-  const { mutate: mutateNewTask } = useMutation(createTask, {
-    onSuccess: (data) => {
-      listRefetch();
-      setNewTaskInputTitle("");
-    },
-  });
+  const { mutate: mutateNewTask, isLoading: newTaskLoading } = useMutation(
+    createTask,
+    {
+      onSuccess: (data) => {
+        setNewTaskInputTitle("");
+        socket.emit("createNewTask", data);
+      },
+    }
+  );
+
   const handleToggleListDrop = () => {
     setIsListDropOpen(!isListDropOpen);
   };
@@ -31,7 +38,7 @@ const IndividualList = ({ list, listRefetch }) => {
     setNewTaskInputTitle("");
   };
   const handleCreateNewTask = (e) => {
-    if (e.keyCode === 13) {
+    if (e.keyCode === 13 && newTaskLoading === false) {
       mutateNewTask({
         listId: _id,
         taskTitle: newTaskInputTitle,
@@ -39,6 +46,7 @@ const IndividualList = ({ list, listRefetch }) => {
       });
     }
   };
+
   return (
     <Box mt="1.6rem">
       <Stack direction="row" justifyContent="space-between">
@@ -121,8 +129,8 @@ const IndividualList = ({ list, listRefetch }) => {
                   value={newTaskInputTitle}
                   onChange={handleNewTaskInputTitle}
                   placeholder="+ New task"
-                  fullWidth="true"
-                  autoFocus="true"
+                  fullWidth={true}
+                  autoFocus={true}
                   sx={{
                     border: "1px solid #A084DC",
                     borderRadius: "3px",

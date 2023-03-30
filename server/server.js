@@ -45,6 +45,10 @@ io.on("connection", (socket) => {
   socket.on("createNewList", (data) => {
     io.emit("createNewList", data);
   });
+
+  socket.on("createNewTask", (listData) => {
+    io.emit("createNewTask", listData);
+  });
 });
 
 server.listen(process.env.PORT || 5000, () => {

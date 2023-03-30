@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { DragDropContext } from "react-beautiful-dnd";
 import { useDataContext } from "../../context/Context";
 import IndividualList from "../individual/IndividualList";
-import { useMutation, useQuery, useQueryClient } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import {
   changeTaskPositionWithinList,
   fetchAllListsInProject,
@@ -17,11 +17,7 @@ const ListView = () => {
   const { socket } = useSocketContext();
   const { allList, setAllList } = useListContext();
   const handleOpenNewListModal = () => setOpenNewListModal(true);
-  const {
-    data: listData,
-    isSuccess: listSuccess,
-    refetch: listRefetch,
-  } = useQuery(
+  const { data: listData, isSuccess: listSuccess } = useQuery(
     ["getAllListsInProject", activeProject?.projectId],
     fetchAllListsInProject,
     { retryDelay: 3000 }
@@ -65,11 +61,27 @@ const ListView = () => {
     socket.on("changePositionListData", (data) => {
       setAllList(data);
     });
-    return () => socket.off("changePositionListData");
+
+    return () => {
+      socket.off("changePositionListData");
+    };
   }, [socket]);
   useEffect(() => {
     listData && setAllList(listData);
   }, [listSuccess, listData]);
+  useEffect(() => {
+    socket.on("createNewTask", (data) => {
+      if (allList !== null) {
+        const updatedList = allList.map((list) =>
+          list._id === data._id ? data : list
+        );
+        setAllList(updatedList);
+      }
+    });
+
+    return () => socket.off("createNewTask");
+  }, [socket, allList]);
+
   return (
     <Box
       backgroundColor="gray.bgLight"
@@ -95,14 +107,8 @@ const ListView = () => {
             + New list
           </Typography>
         </Stack>
-        {listSuccess &&
-          allList.map((list) => (
-            <IndividualList
-              list={list}
-              listRefetch={listRefetch}
-              key={list._id}
-            />
-          ))}
+        {allList !== null &&
+          allList.map((list) => <IndividualList list={list} key={list._id} />)}
       </DragDropContext>
       <NewListModal />
     </Box>

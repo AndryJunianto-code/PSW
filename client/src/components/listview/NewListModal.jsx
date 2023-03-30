@@ -22,6 +22,7 @@ const NewListModal = () => {
   const { setAllList } = useListContext();
   const { openNewListModal, setOpenNewListModal, activeProject } =
     useDataContext();
+  const queryClient = useQueryClient();
   const [listColor, setListColor] = useState("#40bc86");
   const [listTitle, setListTitle] = useState("");
 
@@ -29,6 +30,7 @@ const NewListModal = () => {
     onSuccess: (data) => {
       setOpenNewListModal(false);
       setListTitle("");
+      queryClient.invalidateQueries({ queryKey: "getAllListsInProject" });
       socket.emit("createNewList", data);
     },
   });
@@ -41,7 +43,6 @@ const NewListModal = () => {
 
   useEffect(() => {
     socket.on("createNewList", (data) => {
-      console.log(data);
       setAllList((list) => [...list, data]);
     });
     return () => socket.off("createNewList");
