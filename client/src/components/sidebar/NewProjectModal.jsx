@@ -9,7 +9,6 @@ import {
 } from "@mui/material";
 import ClearIcon from "@mui/icons-material/Clear";
 import { useMutation } from "react-query";
-import { useAuth0 } from "@auth0/auth0-react";
 import { v4 as uuidv4 } from "uuid";
 import { createProject } from "../../request/spaceRequest";
 
@@ -58,6 +57,7 @@ const NewSpaceModal = ({
           boxShadow: 24,
           borderRadius: "4px",
           p: 4,
+          outline: "none",
         }}
       >
         <Typography variant="h5" component="h1" textAlign="center">

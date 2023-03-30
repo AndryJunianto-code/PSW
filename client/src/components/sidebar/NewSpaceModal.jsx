@@ -55,6 +55,7 @@ const NewSpaceModal = ({
           boxShadow: 24,
           borderRadius: "4px",
           p: 4,
+          outline: "none",
         }}
       >
         <Typography variant="h5" component="h1" textAlign="center">

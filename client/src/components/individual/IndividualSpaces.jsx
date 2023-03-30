@@ -8,10 +8,15 @@ import {
   Stack,
 } from "@mui/material";
 import ExpandMoreOutlinedIcon from "@mui/icons-material/ExpandMoreOutlined";
+import PeopleAltOutlinedIcon from "@mui/icons-material/PeopleAltOutlined";
 import AddIcon from "@mui/icons-material/Add";
 import IndividualProject from "./IndividualProject";
 
-const IndividualSpaces = ({ space, setOpenNewProjectModal }) => {
+const IndividualSpaces = ({
+  space,
+  setOpenNewProjectModal,
+  setOpenInviteMemberModal,
+}) => {
   const [isHover, setIsHover] = useState(false);
   const handleHover = () => {
     setIsHover(true);
@@ -22,6 +27,10 @@ const IndividualSpaces = ({ space, setOpenNewProjectModal }) => {
   const handleOpenNewProjectModal = (e) => {
     e.stopPropagation();
     setOpenNewProjectModal({ open: true, spaceId: space._id });
+  };
+  const handleOpenInviteMemberModal = (e) => {
+    e.stopPropagation();
+    setOpenInviteMemberModal({ open: true, spaceId: space._id });
   };
   return (
     <Accordion
@@ -49,6 +58,17 @@ const IndividualSpaces = ({ space, setOpenNewProjectModal }) => {
             {space.spaceTitle[0]}
           </Box>
           <Typography variant="body2">{space.spaceTitle}</Typography>
+          {isHover && (
+            <PeopleAltOutlinedIcon
+              onClick={handleOpenInviteMemberModal}
+              sx={{
+                position: "absolute",
+                right: "3.8rem",
+                color: "gray.fontMDark",
+                width: "1.1rem",
+              }}
+            />
+          )}
           {isHover && (
             <AddIcon
               onClick={handleOpenNewProjectModal}
