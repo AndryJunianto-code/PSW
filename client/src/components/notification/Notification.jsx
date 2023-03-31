@@ -2,6 +2,10 @@ import { Box, styled, Stack, Typography, Divider, Button } from "@mui/material";
 import React from "react";
 import KeyboardDoubleArrowRightOutlinedIcon from "@mui/icons-material/KeyboardDoubleArrowRightOutlined";
 import { useDataContext } from "../../context/Context";
+import { useAuth0 } from "@auth0/auth0-react";
+import { useQuery } from "react-query";
+import { fetchNotification } from "../../request/notificationRequest";
+import IndividualNotification from "./IndividualNotification";
 
 const NotifBox = styled(Box)(({ theme }) => ({
   backgroundColor: "white",
@@ -11,6 +15,13 @@ const NotifBox = styled(Box)(({ theme }) => ({
 }));
 const Notification = () => {
   const { toggleDrawer } = useDataContext();
+  const { user } = useAuth0();
+  const { data: notificatonData, isSuccess: notificationSuccess } = useQuery(
+    ["getNotification", user?.email],
+    fetchNotification,
+    { retryDelay: 3000 }
+  );
+
   return (
     <>
       <Stack
@@ -49,60 +60,11 @@ const Notification = () => {
         flex-direction="column"
         sx={{ width: { xs: "100%", lg: "90%" } }}
       >
-        <NotifBox sx={{ width: { xs: "80vw", lg: "40vw" } }}>
-          <Stack>
-            <Typography
-              variant="caption"
-              sx={{
-                width: "30%",
-                maxWidth: "100%",
-                border: "1px solid #fafbfc",
-                backgroundColor: "#0034e3",
-                color: "white",
-                borderRadius: "4px",
-                padding: "0.1rem 0.5rem",
-              }}
-            >
-              Life ^ personal
-            </Typography>
-            <Typography
-              mt="0.4rem"
-              fontWeight="600"
-              fontSize="1rem"
-              pl="0.5rem"
-            >
-              Finish UI/UX Design
-            </Typography>
-          </Stack>
-          <Divider sx={{ my: "0.6rem" }} />
-          <Stack
-            direction="row"
-            alignItems="center"
-            justifyContent="space-between"
-          >
-            <Stack direction="row" alignItems="center">
-              <Button
-              variant='outlined'
-                sx={{
-                  border:'1px solid red',
-                  fontSize: "0.6rem",
-                  borderRadius: "20px",
-                  padding: "0.1rem",
-                  mr: "1rem",
-                  color:'red'
-                }}
-              >
-                Overdue
-              </Button>
-              <Typography variant="caption" sx={{ color: "red" }}>
-                Feb 21
-              </Typography>
-            </Stack>
-            <Typography variant="caption" color="gray.fontMDark">
-              Feb 22 at 12.14 am
-            </Typography>
-          </Stack>
-        </NotifBox>
+        {notificationSuccess &&
+          notificatonData.map((notif) => (
+            <IndividualNotification key={notif._id} notification={notif} />
+          ))}
+
         <NotifBox sx={{ width: { xs: "80vw", lg: "40vw" } }}>
           <Stack>
             <Typography
@@ -136,15 +98,15 @@ const Notification = () => {
             justifyContent="space-between"
           >
             <Stack direction="row" alignItems="center">
-               <Button
-              variant='outlined'
+              <Button
+                variant="outlined"
                 sx={{
-                  border:'1px solid red',
+                  border: "1px solid red",
                   fontSize: "0.6rem",
                   borderRadius: "20px",
                   padding: "0.1rem",
                   mr: "1rem",
-                  color:'red'
+                  color: "red",
                 }}
               >
                 Overdue
@@ -191,15 +153,15 @@ const Notification = () => {
             justifyContent="space-between"
           >
             <Stack direction="row" alignItems="center">
-               <Button
-              variant='outlined'
+              <Button
+                variant="outlined"
                 sx={{
-                  border:'1px solid primary.main',
+                  border: "1px solid primary.main",
                   fontSize: "0.6rem",
                   borderRadius: "20px",
                   padding: "0.1rem",
                   mr: "1rem",
-                  color:'primary.main'
+                  color: "primary.main",
                 }}
               >
                 Pending

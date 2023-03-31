@@ -25,3 +25,12 @@ export const createProject = async (obj) => {
   });
   return data;
 };
+
+//accept invite member
+export const acceptInvitation = async (obj) => {
+  const { data } = await axios.put("/spaces/acceptInvitation", {
+    spaceId: obj.spaceId,
+    memberId: obj.memberId,
+  });
+  return data;
+};

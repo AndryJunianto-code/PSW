@@ -6,6 +6,7 @@ const http = require("http");
 const socketIO = require("socket.io");
 const spaceRoutes = require("./routes/SpaceRoutes");
 const listRoutes = require("./routes/ListRoutes");
+const notificationRoutes = require("./routes/NotificationRoutes");
 
 const app = express();
 const server = http.createServer(app);
@@ -34,6 +35,7 @@ mongoose
 
 app.use("/api/spaces", spaceRoutes);
 app.use("/api/lists", listRoutes);
+app.use("/api/notifications", notificationRoutes);
 
 io.on("connection", (socket) => {
   console.log(`${socket.id} user just connected`);

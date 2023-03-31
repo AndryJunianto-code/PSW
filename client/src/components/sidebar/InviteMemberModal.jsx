@@ -7,14 +7,38 @@ import {
   Typography,
 } from "@mui/material";
 import ClearIcon from "@mui/icons-material/Clear";
-import React from "react";
+import { useState } from "react";
+import { inviteMember } from "../../request/notificationRequest";
+import { useAuth0 } from "@auth0/auth0-react";
+import { useMutation } from "react-query";
 
 const InviteMemberModal = ({
   openInviteMemberModal,
   setOpenInviteMemberModal,
+  activeSpace,
 }) => {
-  const handleCloseInviteMemberModal = () =>
+  const { user } = useAuth0();
+  const [inputUserEmail, setInputUserEmail] = useState("");
+  const { mutate: mutateMember } = useMutation(inviteMember, {
+    onSuccess: (data) => {
+      console.log(data);
+    },
+  });
+  const handleInviteMember = () => {
+    mutateMember({
+      senderEmail: user?.email,
+      receiverEmail: inputUserEmail,
+      senderName: user?.name,
+      senderImage: user?.picture,
+      spaceTitle: activeSpace.spaceTitle,
+      spaceId: activeSpace.spaceId,
+    });
+  };
+  const handleInputUserEmail = (e) => setInputUserEmail(e.target.value);
+  const handleCloseInviteMemberModal = () => {
     setOpenInviteMemberModal({ open: false, spaceId: null });
+    setInputUserEmail("");
+  };
   return (
     <Modal
       open={openInviteMemberModal.open}
@@ -54,6 +78,8 @@ const InviteMemberModal = ({
           justifyContent="center"
         >
           <InputBase
+            value={inputUserEmail}
+            onChange={handleInputUserEmail}
             sx={{
               backgroundColor: "#f0f1f3",
               paddingX: "0.5rem",
@@ -66,7 +92,7 @@ const InviteMemberModal = ({
             fullWidth={true}
           />
           <Button
-            onClick={"handleCreateSpace"}
+            onClick={handleInviteMember}
             variant="contained"
             sx={{
               boxShadow: "none",

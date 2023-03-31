@@ -27,6 +27,10 @@ const SidebarSpaces = () => {
     open: false,
     spaceId: null,
   });
+  const [activeSpace, setActiveSpace] = useState({
+    spaceId: "",
+    spaceTitle: "",
+  });
   const handleOpenNewSpaceModal = () => setOpenNewSpaceModal(true);
   const handleCloseNewSpaceModal = () => setOpenNewSpaceModal(false);
   const [spaces, setSpaces] = useState([]);
@@ -65,6 +69,7 @@ const SidebarSpaces = () => {
                   space={space}
                   setOpenNewProjectModal={setOpenNewProjectModal}
                   setOpenInviteMemberModal={setOpenInviteMemberModal}
+                  setActiveSpace={setActiveSpace}
                 />
               ))}
           </Box>
@@ -83,6 +88,7 @@ const SidebarSpaces = () => {
       <InviteMemberModal
         openInviteMemberModal={openInviteMemberModal}
         setOpenInviteMemberModal={setOpenInviteMemberModal}
+        activeSpace={activeSpace}
       />
     </>
   );

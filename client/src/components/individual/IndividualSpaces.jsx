@@ -16,6 +16,7 @@ const IndividualSpaces = ({
   space,
   setOpenNewProjectModal,
   setOpenInviteMemberModal,
+  setActiveSpace,
 }) => {
   const [isHover, setIsHover] = useState(false);
   const handleHover = () => {
@@ -31,6 +32,7 @@ const IndividualSpaces = ({
   const handleOpenInviteMemberModal = (e) => {
     e.stopPropagation();
     setOpenInviteMemberModal({ open: true, spaceId: space._id });
+    setActiveSpace({ spaceId: space._id, spaceTitle: space.spaceTitle });
   };
   return (
     <Accordion

@@ -49,4 +49,22 @@ router.put("/addProject", async (req, res) => {
   }
 });
 
+//invite member
+router.put("/acceptInvitation", async (req, res) => {
+  try {
+    const space = await Space.findByIdAndUpdate(
+      req.body.spaceId,
+      {
+        $push: {
+          membersId: req.body.memberId,
+        },
+      },
+      { new: true }
+    );
+    res.status(200).json(space);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
 module.exports = router;
