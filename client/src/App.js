@@ -5,6 +5,7 @@ import AuthProvider from "./auth/AuthProvider";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import { useAuth0 } from "@auth0/auth0-react";
+import Notification from "./components/notification/Notification";
 function App() {
   const { isAuthenticated } = useAuth0();
   return (
@@ -12,7 +13,12 @@ function App() {
       <AuthProvider>
         <Routes>
           {/* <Route path="/" element={<Home />} /> */}
-          <Route path="/" element={<MainHome />} />
+          <Route path="/" element={<Home />} />
+          <Route
+            path="/p/:activeProjectTitle/:activeProjectId"
+            element={<MainHome />}
+          />
+          <Route path="/notification" element={<Notification />} />
         </Routes>
       </AuthProvider>
     </Router>

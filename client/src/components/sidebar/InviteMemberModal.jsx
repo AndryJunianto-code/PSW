@@ -21,7 +21,7 @@ const InviteMemberModal = ({
   const [inputUserEmail, setInputUserEmail] = useState("");
   const { mutate: mutateMember } = useMutation(inviteMember, {
     onSuccess: (data) => {
-      console.log(data);
+      setOpenInviteMemberModal({ open: false, spaceId: null });
     },
   });
   const handleInviteMember = () => {

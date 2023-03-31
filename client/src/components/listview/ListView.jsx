@@ -11,14 +11,15 @@ import {
 import NewListModal from "./NewListModal";
 import { useSocketContext } from "../../context/socketContext";
 import { useListContext } from "../../context/listContext";
-
+import { useParams } from "react-router-dom";
 const ListView = () => {
-  const { activeProject, setOpenNewListModal } = useDataContext();
+  const { setOpenNewListModal } = useDataContext();
+  const { activeProjectTitle, activeProjectId } = useParams();
   const { socket } = useSocketContext();
   const { allList, setAllList } = useListContext();
   const handleOpenNewListModal = () => setOpenNewListModal(true);
   const { data: listData, isSuccess: listSuccess } = useQuery(
-    ["getAllListsInProject", activeProject?.projectId],
+    ["getAllListsInProject", activeProjectId],
     fetchAllListsInProject,
     { retryDelay: 3000 }
   );
@@ -95,7 +96,7 @@ const ListView = () => {
     >
       <DragDropContext onDragEnd={(result) => handleDragEnd(result, allList)}>
         <Stack direction="row" alignItems="center">
-          <Typography fontWeight="700">{activeProject.projectTitle}</Typography>
+          <Typography fontWeight="700">{activeProjectTitle}</Typography>
           <Typography
             variant="caption"
             color="gray.fontMDark"

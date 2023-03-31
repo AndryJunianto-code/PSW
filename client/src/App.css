@@ -43,3 +43,7 @@
   align-items: flex-end;
   justify-content: flex-end;
 }
+
+.link {
+  text-decoration: none;
+}

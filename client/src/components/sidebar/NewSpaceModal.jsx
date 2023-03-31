@@ -30,6 +30,8 @@ const NewSpaceModal = ({
   const { mutate: mutateSpace } = useMutation(createSpace, {
     onSuccess: (data) => {
       handleCloseNewSpaceModal();
+      setSpaceTitle("");
+      setSpaceColor("#40bc86");
       refetchSpaces();
     },
   });
@@ -81,6 +83,7 @@ const NewSpaceModal = ({
             placeholder="Enter Space name"
             required
             sx={{ borderBottom: "1px solid #e4e4e4" }}
+            inputProps={{ maxLength: 15 }}
           />
         </Stack>
         <Stack>
