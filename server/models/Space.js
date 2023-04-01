@@ -10,11 +10,11 @@ const SpaceSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    membersId: {
+    members: {
       type: Array,
       default: [],
     },
-    adminsId: {
+    admins: {
       type: Array,
       default: [],
     },

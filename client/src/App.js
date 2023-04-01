@@ -13,11 +13,7 @@ function App() {
       <AuthProvider>
         <Routes>
           {/* <Route path="/" element={<Home />} /> */}
-          <Route path="/" element={<Home />} />
-          <Route
-            path="/p/:activeProjectTitle/:activeProjectId"
-            element={<MainHome />}
-          />
+          <Route path="/" element={<MainHome />} />
           <Route path="/notification" element={<Notification />} />
         </Routes>
       </AuthProvider>

@@ -23,6 +23,13 @@ const NotificationSchema = new mongoose.Schema(
     spaceId: {
       type: String,
     },
+    message: {
+      type: String,
+    },
+    clicked: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
 );

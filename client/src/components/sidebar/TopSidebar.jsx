@@ -14,11 +14,10 @@ import { useDataContext } from "../../context/Context";
 
 const TopSidebar = () => {
   const { setViewMode } = useDataContext();
-  const goToNotification = () => setViewMode("Notification");
   return (
     <List>
       <Link to="/notification" className={"link"}>
-        <ListItem disablePadding onClick={goToNotification}>
+        <ListItem disablePadding>
           <ListItemButton disableGutters>
             <ListItemIcon>
               <NotificationsOutlinedIcon />

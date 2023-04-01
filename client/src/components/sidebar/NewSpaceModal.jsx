@@ -26,7 +26,6 @@ const NewSpaceModal = ({
   const handleSpaceTitle = (e) => {
     setSpaceTitle(e.target.value);
   };
-
   const { mutate: mutateSpace } = useMutation(createSpace, {
     onSuccess: (data) => {
       handleCloseNewSpaceModal();
@@ -37,7 +36,14 @@ const NewSpaceModal = ({
   });
 
   const handleCreateSpace = () => {
-    mutateSpace({ spaceTitle, spaceColor, adminsId: [user?.sub] });
+    mutateSpace({
+      spaceTitle,
+      spaceColor,
+      username: user?.name,
+      picture: user?.picture,
+      userId: user?.sub,
+      email: user?.email,
+    });
   };
   return (
     <Modal

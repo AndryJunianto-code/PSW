@@ -1,4 +1,5 @@
 const router = require("express").Router();
+const Notification = require("../models/Notification");
 const Space = require("../models/Space");
 
 //create space
@@ -16,10 +17,18 @@ router.post("/", async (req, res) => {
 router.get("/getAll/:userId", async (req, res) => {
   try {
     const spaces = await Space.find({
-      adminsId: { $in: [req.params.userId] },
+      admins: {
+        $elemMatch: {
+          userId: req.params.userId,
+        },
+      },
     });
     const members = await Space.find({
-      membersId: { $in: [req.params.userId] },
+      members: {
+        $elemMatch: {
+          userId: req.params.userId,
+        },
+      },
     });
     const data = [...spaces, ...members];
     res.status(200).json(data);
@@ -51,16 +60,65 @@ router.put("/addProject", async (req, res) => {
 
 //invite member
 router.put("/acceptInvitation", async (req, res) => {
+  const { spaceId, username, picture, userId, email } = req.body;
   try {
     const space = await Space.findByIdAndUpdate(
-      req.body.spaceId,
+      spaceId,
       {
         $push: {
-          membersId: req.body.memberId,
+          members: {
+            username,
+            picture,
+            userId,
+            email,
+          },
         },
       },
       { new: true }
     );
+    const clickedNotification = await Notification.findOneAndUpdate(
+      { receiverEmail: email, spaceId },
+      {
+        $set: {
+          clicked: true,
+        },
+      }
+    );
+    res.status(200).json(space);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+//remove member & admin
+router.put("/removePeople", async (req, res) => {
+  const { spaceId, userId, thisIsAdmin } = req.body;
+  let space;
+  try {
+    if (thisIsAdmin === false) {
+      space = await Space.findByIdAndUpdate(
+        spaceId,
+        {
+          $pull: {
+            members: {
+              userId,
+            },
+          },
+        },
+        { new: true }
+      );
+    } else {
+      space = await Space.findByIdAndUpdate(
+        spaceId,
+        {
+          $pull: {
+            admins: {
+              userId,
+            },
+          },
+        },
+        { new: true }
+      );
+    }
     res.status(200).json(space);
   } catch (err) {
     res.status(500).json(err);

@@ -24,6 +24,7 @@ const NewSpaceModal = ({
   const { mutate: mutateProject } = useMutation(createProject, {
     onSuccess: (data) => {
       handleCloseNewProjectModal();
+      setProjectTitle("");
       refetchSpaces();
     },
   });

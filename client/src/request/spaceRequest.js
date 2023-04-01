@@ -5,7 +5,14 @@ export const createSpace = async (obj) => {
   const { data } = await axios.post("/spaces", {
     spaceTitle: obj.spaceTitle,
     spaceColor: obj.spaceColor,
-    adminsId: obj.adminsId,
+    admins: [
+      {
+        username: obj.username,
+        picture: obj.picture,
+        userId: obj.userId,
+        email: obj.email,
+      },
+    ],
   });
   return data;
 };
@@ -30,7 +37,20 @@ export const createProject = async (obj) => {
 export const acceptInvitation = async (obj) => {
   const { data } = await axios.put("/spaces/acceptInvitation", {
     spaceId: obj.spaceId,
-    memberId: obj.memberId,
+    username: obj.username,
+    picture: obj.picture,
+    userId: obj.userId,
+    email: obj.email,
+  });
+  return data;
+};
+
+//remove member & admin
+export const removePeople = async (obj) => {
+  const { data } = await axios.put("/spaces/removePeople", {
+    spaceId: obj.spaceId,
+    userId: obj.userId,
+    thisIsAdmin: obj.thisIsAdmin,
   });
   return data;
 };

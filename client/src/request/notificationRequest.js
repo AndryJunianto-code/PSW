@@ -1,14 +1,15 @@
 import axios from "axios";
 
 //invite member
-export const inviteMember = async (obj) => {
-  const { data } = await axios.post("/notifications/inviteMember", {
+export const createNotification = async (obj) => {
+  const { data } = await axios.post("/notifications", {
     senderEmail: obj.senderEmail,
     receiverEmail: obj.receiverEmail,
     senderName: obj.senderName,
     senderImage: obj.senderImage,
     spaceTitle: obj.spaceTitle,
     spaceId: obj.spaceId,
+    message: obj.message,
   });
   return data;
 };

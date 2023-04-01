@@ -14,7 +14,6 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { fetchAllSpaces } from "../../request/spaceRequest";
 import IndividualSpaces from "../individual/IndividualSpaces";
 import NewProjectModal from "../sidebar/NewProjectModal";
-import InviteMemberModal from "./InviteMemberModal";
 
 const SidebarSpaces = () => {
   const { user } = useAuth0();
@@ -23,14 +22,7 @@ const SidebarSpaces = () => {
     open: false,
     spaceId: null,
   });
-  const [openInviteMemberModal, setOpenInviteMemberModal] = useState({
-    open: false,
-    spaceId: null,
-  });
-  const [activeSpace, setActiveSpace] = useState({
-    spaceId: "",
-    spaceTitle: "",
-  });
+
   const handleOpenNewSpaceModal = () => setOpenNewSpaceModal(true);
   const handleCloseNewSpaceModal = () => setOpenNewSpaceModal(false);
   const [spaces, setSpaces] = useState([]);
@@ -68,8 +60,6 @@ const SidebarSpaces = () => {
                   key={space._id}
                   space={space}
                   setOpenNewProjectModal={setOpenNewProjectModal}
-                  setOpenInviteMemberModal={setOpenInviteMemberModal}
-                  setActiveSpace={setActiveSpace}
                 />
               ))}
           </Box>
@@ -84,11 +74,6 @@ const SidebarSpaces = () => {
         openNewProjectModal={openNewProjectModal}
         setOpenNewProjectModal={setOpenNewProjectModal}
         refetchSpaces={refetchSpaces}
-      />
-      <InviteMemberModal
-        openInviteMemberModal={openInviteMemberModal}
-        setOpenInviteMemberModal={setOpenInviteMemberModal}
-        activeSpace={activeSpace}
       />
     </>
   );

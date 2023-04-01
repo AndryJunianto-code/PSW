@@ -2,7 +2,7 @@ const router = require("express").Router();
 const Notification = require("../models/Notification");
 
 //invitemembernotif
-router.post("/inviteMember", async (req, res) => {
+router.post("/", async (req, res) => {
   const newNotification = new Notification(req.body);
   try {
     const savedNotification = await newNotification.save();

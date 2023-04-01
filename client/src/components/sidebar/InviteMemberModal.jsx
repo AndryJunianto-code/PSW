@@ -1,4 +1,5 @@
 import {
+  Avatar,
   Box,
   Button,
   InputBase,
@@ -7,10 +8,11 @@ import {
   Typography,
 } from "@mui/material";
 import ClearIcon from "@mui/icons-material/Clear";
-import { useState } from "react";
-import { inviteMember } from "../../request/notificationRequest";
+import { useEffect, useState } from "react";
+import { createNotification } from "../../request/notificationRequest";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useMutation } from "react-query";
+import IndividualInvitedMember from "../individual/IndividualInvitedMember";
 
 const InviteMemberModal = ({
   openInviteMemberModal,
@@ -19,9 +21,10 @@ const InviteMemberModal = ({
 }) => {
   const { user } = useAuth0();
   const [inputUserEmail, setInputUserEmail] = useState("");
-  const { mutate: mutateMember } = useMutation(inviteMember, {
+  const [isAdmin, setIsAdmin] = useState(false);
+  const { mutate: mutateMember } = useMutation(createNotification, {
     onSuccess: (data) => {
-      setOpenInviteMemberModal({ open: false, spaceId: null });
+      handleCloseInviteMemberModal();
     },
   });
   const handleInviteMember = () => {
@@ -31,7 +34,8 @@ const InviteMemberModal = ({
       senderName: user?.name,
       senderImage: user?.picture,
       spaceTitle: activeSpace.spaceTitle,
-      spaceId: activeSpace.spaceId,
+      spaceId: activeSpace._id,
+      message: "invite",
     });
   };
   const handleInputUserEmail = (e) => setInputUserEmail(e.target.value);
@@ -39,6 +43,12 @@ const InviteMemberModal = ({
     setOpenInviteMemberModal({ open: false, spaceId: null });
     setInputUserEmail("");
   };
+  useEffect(() => {
+    const adminExist = activeSpace.admins.filter(
+      (admin) => admin.userId === user?.sub
+    );
+    if (adminExist.length > 0) setIsAdmin(true);
+  }, [activeSpace]);
   return (
     <Modal
       open={openInviteMemberModal.open}
@@ -104,14 +114,30 @@ const InviteMemberModal = ({
             Invite
           </Button>
         </Stack>
-        <Typography
-          variant="caption"
-          color="gray.fontMDark"
-          fontWeight="600"
-          sx={{ marginY: "10rem" }}
-        >
+        {/* MEMBER SECTION */}
+        <Typography variant="caption" color="gray.fontMDark" fontWeight="600">
           SHARE WITH
         </Typography>
+        {activeSpace.admins.map((member) => (
+          <IndividualInvitedMember
+            key={member.userId}
+            member={member}
+            isAdmin={isAdmin}
+            thisIsAdmin={true}
+            spaceId={activeSpace._id}
+            spaceTitle={activeSpace.spaceTitle}
+          />
+        ))}
+        {activeSpace.members.map((member) => (
+          <IndividualInvitedMember
+            key={member.userId}
+            member={member}
+            isAdmin={isAdmin}
+            thisIsAdmin={false}
+            spaceId={activeSpace._id}
+            spaceTitle={activeSpace.spaceTitle}
+          />
+        ))}
       </Box>
     </Modal>
   );

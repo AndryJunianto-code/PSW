@@ -11,7 +11,8 @@ const NotifBox = styled(Box)(({ theme }) => ({
   marginBottom: "1rem",
 }));
 const IndividualNotification = ({ notification }) => {
-  const { senderName, spaceTitle, spaceId, createdAt } = notification;
+  const { senderName, spaceTitle, spaceId, createdAt, message, clicked } =
+    notification;
   const { user } = useAuth0();
   const queryClient = useQueryClient();
   const notificationDate =
@@ -20,15 +21,18 @@ const IndividualNotification = ({ notification }) => {
     dayjs(createdAt).format("h:mm A");
   const { mutate: mutateAccept } = useMutation(acceptInvitation, {
     onSuccess: (data) => {
-      console.log(data);
       queryClient.invalidateQueries({ queryKey: ["fetchAllSpaces"] });
+      queryClient.invalidateQueries({ queryKey: ["getNotification"] });
     },
   });
 
   const handleAcceptInvitation = () => {
     mutateAccept({
       spaceId,
-      memberId: user?.sub,
+      username: user?.name,
+      picture: user?.picture,
+      userId: user?.sub,
+      email: user?.email,
     });
   };
   return (
@@ -49,13 +53,20 @@ const IndividualNotification = ({ notification }) => {
           {spaceTitle}
         </Typography>
         <Typography mt="0.4rem" fontWeight="600" fontSize="1rem" pl="0.5rem">
-          {senderName} added you to <u>{spaceTitle}</u>
+          {senderName}{" "}
+          {message === "invite" ? " added you to " : " removed you from "}
+          <u>{spaceTitle}</u>
         </Typography>
       </Stack>
       <Stack direction="row" alignItems="center" justifyContent="space-between">
         <Box>
-          <Button>Delete</Button>
-          <Button onClick={handleAcceptInvitation}>Accept</Button>
+          {message === "invite" && !clicked && (
+            <>
+              <Button>Delete</Button>
+              <Button onClick={handleAcceptInvitation}>Accept</Button>
+            </>
+          )}
+          {clicked === true && <Button color="success">Accepted</Button>}
         </Box>
         <Typography variant="caption" mr="2rem" color="gray.fontMDark">
           {notificationDate}

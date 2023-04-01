@@ -16,13 +16,12 @@ import { useMutation, useQueryClient } from "react-query";
 import { createList } from "../../request/listRequest";
 import { useSocketContext } from "../../context/socketContext";
 import { useListContext } from "../../context/listContext";
-import { useParams } from "react-router-dom";
 
 const NewListModal = () => {
+  const { activeProject } = useDataContext();
   const { socket } = useSocketContext();
   const { setAllList } = useListContext();
   const { openNewListModal, setOpenNewListModal } = useDataContext();
-  const { activeProjectId } = useParams();
   const queryClient = useQueryClient();
   const [listColor, setListColor] = useState("#40bc86");
   const [listTitle, setListTitle] = useState("");
@@ -39,7 +38,7 @@ const NewListModal = () => {
   const handleListTitle = (e) => setListTitle(e.target.value);
   const handleCloseNewListModal = () => setOpenNewListModal(false);
   const handleCreateNewList = () => {
-    mutateList({ listTitle, projectId: activeProjectId });
+    mutateList({ listTitle, projectId: activeProject?.projectId });
   };
 
   useEffect(() => {
