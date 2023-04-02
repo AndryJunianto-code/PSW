@@ -6,6 +6,10 @@ const ListSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    listColor: {
+      type: String,
+      required: true,
+    },
     projectId: {
       type: String,
       required: true,

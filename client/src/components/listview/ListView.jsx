@@ -12,10 +12,14 @@ import NewListModal from "./NewListModal";
 import { useSocketContext } from "../../context/socketContext";
 import { useListContext } from "../../context/listContext";
 const ListView = () => {
-  const { activeProject, setOpenNewListModal } = useDataContext();
+  const { activeProject } = useDataContext();
   const { socket } = useSocketContext();
-  const { allList, setAllList } = useListContext();
-  const handleOpenNewListModal = () => setOpenNewListModal(true);
+  const { allList, setAllList, listModalDispatch } = useListContext();
+
+  const handleOpenNewListModal = () => {
+    listModalDispatch({ type: "openListModal" });
+  };
+
   const { data: listData, isSuccess: listSuccess } = useQuery(
     ["getAllListsInProject", activeProject?.projectId],
     fetchAllListsInProject,

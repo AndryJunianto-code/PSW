@@ -15,7 +15,6 @@ const DataContextProvider = ({ children }) => {
     task: "",
     open: false,
   });
-  const [openNewListModal, setOpenNewListModal] = useState(false);
   const toggleDrawer = (open) => (event) => {
     if (
       event.type === "keydown" &&
@@ -40,8 +39,6 @@ const DataContextProvider = ({ children }) => {
         toggleDrawer,
         detailedTaskSelected,
         setDetailedTaskSelected,
-        openNewListModal,
-        setOpenNewListModal,
       }}
     >
       {children}

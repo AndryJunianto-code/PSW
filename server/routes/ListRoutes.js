@@ -64,4 +64,24 @@ router.put("/changeTaskPositionWithinList", async (req, res) => {
   }
 });
 
+//modify list title and color
+router.put("/modifyList", async (req, res) => {
+  const { listId, newListTitle, newListColor } = req.body;
+  try {
+    const list = await List.findByIdAndUpdate(
+      listId,
+      {
+        $set: {
+          listTitle: newListTitle,
+          listColor: newListColor,
+        },
+      },
+      { new: true }
+    );
+    res.status(200).json(list);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
 module.exports = router;

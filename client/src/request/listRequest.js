@@ -4,6 +4,7 @@ import axios from "axios";
 export const createList = async (obj) => {
   const { data } = await axios.post("/lists", {
     listTitle: obj.listTitle,
+    listColor: obj.listColor,
     projectId: obj.projectId,
   });
   return data;
@@ -32,6 +33,15 @@ export const changeTaskPositionWithinList = async (obj) => {
   const { data } = await axios.put("/lists/changeTaskPositionWithinList", {
     listId: obj.listId,
     newTasks: obj.newTasks,
+  });
+  return data;
+};
+
+export const modifyList = async (obj) => {
+  const { data } = await axios.put("/lists/modifyList", {
+    listId: obj.listId,
+    newListTitle: obj.newListTitle,
+    newListColor: obj.newListColor,
   });
   return data;
 };

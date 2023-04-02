@@ -4,15 +4,18 @@ import ArrowDropDownCircleOutlinedIcon from "@mui/icons-material/ArrowDropDownCi
 import ArrowRightOutlinedIcon from "@mui/icons-material/ArrowRightOutlined";
 import { ListDroppable } from "../../utils/ListDroppable";
 import IndividualTask from "./IndividualTask";
-import { useMutation, useQueryClient } from "react-query";
+import { useMutation } from "react-query";
 import { createTask } from "../../request/listRequest";
 import { v4 } from "uuid";
 import { useSocketContext } from "../../context/socketContext";
+import EditIcon from "@mui/icons-material/Edit";
+import { useListContext } from "../../context/listContext";
 
 const IndividualList = ({ list }) => {
-  const { listTitle, tasks, _id } = list;
-  const queryClient = useQueryClient();
+  const { listTitle, listColor, tasks, _id } = list;
+  const { listModalDispatch } = useListContext();
   const { socket } = useSocketContext();
+  const [isHover, setIsHover] = useState(false);
   const [isListDropOpen, setIsListDropOpen] = useState(true);
   const [newTaskInputTitle, setNewTaskInputTitle] = useState("");
   const [isEditingTaskMode, setIsEditingTaskMode] = useState(false);
@@ -46,7 +49,20 @@ const IndividualList = ({ list }) => {
       });
     }
   };
-
+  const handleOpenModifyList = () => {
+    listModalDispatch({
+      type: "openListModalUpdate",
+      listTitle,
+      listColor,
+      listId: _id,
+    });
+  };
+  const handleHover = () => {
+    setIsHover(true);
+  };
+  const handleLeave = () => {
+    setIsHover(false);
+  };
   return (
     <Box mt="1.6rem">
       <Stack direction="row" justifyContent="space-between">
@@ -54,28 +70,46 @@ const IndividualList = ({ list }) => {
           <Box onClick={handleToggleListDrop}>
             {isListDropOpen ? (
               <ArrowDropDownCircleOutlinedIcon
-                sx={{ width: "1.1rem", color: "primary.main" }}
+                sx={{ width: "1.1rem", color: listColor }}
               />
             ) : (
               <ArrowRightOutlinedIcon
-                sx={{ width: "1.1rem", color: "primary.main" }}
+                sx={{ width: "1.1rem", color: listColor }}
               />
             )}
           </Box>
 
           <Typography
+            onMouseEnter={handleHover}
+            onMouseLeave={handleLeave}
             variant="caption"
+            height={"1.2rem"}
+            mr={!isHover && "1.2rem"}
             ml="0.4rem"
-            mr="1.2rem"
             sx={{
-              backgroundColor: "primary.main",
-              borderRadius: "4px 4px 0px 0px",
+              backgroundColor: listColor,
+              borderRadius: `4px ${isHover ? "0px" : "4px"} 0px 0px`,
               paddingX: "0.4rem",
               color: "white",
             }}
           >
             {listTitle}
           </Typography>
+          {isHover && (
+            <EditIcon
+              onClick={handleOpenModifyList}
+              onMouseEnter={handleHover}
+              onMouseLeave={handleLeave}
+              sx={{
+                width: "0.8rem",
+                height: "1.2rem",
+                borderRadius: "0px 4px 0px 0px",
+                paddingX: "0.4rem",
+                mr: "1.2rem",
+                backgroundColor: listColor,
+              }}
+            />
+          )}
           <Typography
             variant="caption"
             color="gray.fontMDark"

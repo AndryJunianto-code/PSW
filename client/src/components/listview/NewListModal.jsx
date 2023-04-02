@@ -13,32 +13,52 @@ import { logoColor } from "../../utils/logoColor";
 import DoneIcon from "@mui/icons-material/Done";
 import { useDataContext } from "../../context/Context";
 import { useMutation, useQueryClient } from "react-query";
-import { createList } from "../../request/listRequest";
+import { createList, modifyList } from "../../request/listRequest";
 import { useSocketContext } from "../../context/socketContext";
 import { useListContext } from "../../context/listContext";
 
 const NewListModal = () => {
   const { activeProject } = useDataContext();
   const { socket } = useSocketContext();
-  const { setAllList } = useListContext();
-  const { openNewListModal, setOpenNewListModal } = useDataContext();
+  const { setAllList, listModalDispatch, listModalState } = useListContext();
   const queryClient = useQueryClient();
-  const [listColor, setListColor] = useState("#40bc86");
-  const [listTitle, setListTitle] = useState("");
 
   const { mutate: mutateList } = useMutation(createList, {
     onSuccess: (data) => {
-      setOpenNewListModal(false);
-      setListTitle("");
+      handleCloseNewListModal();
       queryClient.invalidateQueries({ queryKey: "getAllListsInProject" });
       socket.emit("createNewList", data);
     },
   });
 
-  const handleListTitle = (e) => setListTitle(e.target.value);
-  const handleCloseNewListModal = () => setOpenNewListModal(false);
-  const handleCreateNewList = () => {
-    mutateList({ listTitle, projectId: activeProject?.projectId });
+  const { mutate: mutateModifyList } = useMutation(modifyList, {
+    onSuccess: (data) => {
+      handleCloseNewListModal();
+      queryClient.invalidateQueries({ queryKey: "getAllListsInProject" });
+    },
+  });
+
+  const handleListTitle = (e) => {
+    listModalDispatch({ type: "handleListTitle", listTitle: e.target.value });
+  };
+
+  const handleCloseNewListModal = () => {
+    listModalDispatch({ type: "closeListModal" });
+  };
+
+  const handleCreateNewList = () =>
+    mutateList({
+      listTitle: listModalState.listTitle,
+      listColor: listModalState.listColor,
+      projectId: activeProject?.projectId,
+    });
+
+  const handleModifyList = () => {
+    mutateModifyList({
+      listId: listModalState.listId,
+      newListTitle: listModalState.listTitle,
+      newListColor: listModalState.listColor,
+    });
   };
 
   useEffect(() => {
@@ -47,9 +67,10 @@ const NewListModal = () => {
     });
     return () => socket.off("createNewList");
   }, [socket]);
+
   return (
     <Modal
-      open={openNewListModal}
+      open={listModalState.open}
       onClose={handleCloseNewListModal}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
@@ -69,7 +90,7 @@ const NewListModal = () => {
         }}
       >
         <Typography variant="h5" component="h1" textAlign="center">
-          Create new list
+          {listModalState.updateMode ? "Modify list" : "Create new list"}
         </Typography>
         <ClearIcon
           onClick={handleCloseNewListModal}
@@ -87,7 +108,7 @@ const NewListModal = () => {
           </Typography>
           <InputBase
             onChange={handleListTitle}
-            value={listTitle}
+            value={listModalState.listTitle}
             placeholder="Enter List name"
             required
             sx={{ borderBottom: "1px solid #e4e4e4" }}
@@ -101,7 +122,7 @@ const NewListModal = () => {
             <Box
               width="5rem"
               height="4rem"
-              backgroundColor={listColor}
+              backgroundColor={listModalState.listColor}
               borderRadius="8px"
               mr="2rem"
             ></Box>
@@ -109,7 +130,12 @@ const NewListModal = () => {
               {logoColor.map((c, index) => (
                 <Grid item xs={1.5} key={index}>
                   <Box
-                    onClick={() => setListColor(c)}
+                    onClick={() =>
+                      listModalDispatch({
+                        type: "handleListColor",
+                        listColor: c,
+                      })
+                    }
                     backgroundColor={c}
                     width="0.8rem"
                     height="0.8rem"
@@ -118,7 +144,7 @@ const NewListModal = () => {
                     justifyContent="center"
                     display="flex"
                   >
-                    {listColor === c && (
+                    {listModalState.listColor === c && (
                       <DoneIcon sx={{ fontSize: "0.8rem", color: "white" }} />
                     )}
                   </Box>
@@ -127,18 +153,33 @@ const NewListModal = () => {
             </Grid>
           </Stack>
         </Stack>
-        <Button
-          onClick={handleCreateNewList}
-          variant="contained"
-          sx={{
-            marginTop: "2rem",
-            textTransform: "initial",
-            fontSize: "1rem",
-          }}
-          fullWidth
-        >
-          Save
-        </Button>
+        {!listModalState.updateMode ? (
+          <Button
+            onClick={handleCreateNewList}
+            variant="contained"
+            sx={{
+              marginTop: "2rem",
+              textTransform: "initial",
+              fontSize: "1rem",
+            }}
+            fullWidth
+          >
+            Create
+          </Button>
+        ) : (
+          <Button
+            onClick={handleModifyList}
+            variant="contained"
+            sx={{
+              marginTop: "2rem",
+              textTransform: "initial",
+              fontSize: "1rem",
+            }}
+            fullWidth
+          >
+            Save
+          </Button>
+        )}
       </Box>
     </Modal>
   );
