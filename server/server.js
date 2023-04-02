@@ -49,7 +49,11 @@ io.on("connection", (socket) => {
   });
 
   socket.on("createNewTask", (listData) => {
-    io.emit("createNewTask", listData);
+    io.emit("updateList", listData);
+  });
+
+  socket.on("modifyList", (listData) => {
+    io.emit("updateList", listData);
   });
 });
 

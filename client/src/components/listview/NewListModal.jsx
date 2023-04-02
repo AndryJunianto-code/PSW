@@ -35,6 +35,7 @@ const NewListModal = () => {
     onSuccess: (data) => {
       handleCloseNewListModal();
       queryClient.invalidateQueries({ queryKey: "getAllListsInProject" });
+      socket.emit("modifyList", data);
     },
   });
 

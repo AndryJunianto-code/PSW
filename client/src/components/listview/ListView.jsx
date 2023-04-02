@@ -72,7 +72,7 @@ const ListView = () => {
     listData && setAllList(listData);
   }, [listSuccess, listData]);
   useEffect(() => {
-    socket.on("createNewTask", (data) => {
+    socket.on("updateList", (data) => {
       if (allList !== null) {
         const updatedList = allList.map((list) =>
           list._id === data._id ? data : list
@@ -80,8 +80,7 @@ const ListView = () => {
         setAllList(updatedList);
       }
     });
-
-    return () => socket.off("createNewTask");
+    return () => socket.off("updateList");
   }, [socket, allList]);
 
   return (
