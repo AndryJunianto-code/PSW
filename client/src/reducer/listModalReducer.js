@@ -4,6 +4,7 @@ export default function listModalReducer(state, action) {
       return {
         ...state,
         open: true,
+        updateMode: false,
       };
     case "closeListModal":
       return {

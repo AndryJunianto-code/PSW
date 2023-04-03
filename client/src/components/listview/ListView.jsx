@@ -11,8 +11,10 @@ import {
 import NewListModal from "./NewListModal";
 import { useSocketContext } from "../../context/socketContext";
 import { useListContext } from "../../context/listContext";
+import { useAuth0 } from "@auth0/auth0-react";
 const ListView = () => {
-  const { activeProject } = useDataContext();
+  const { activeProject, setActiveProject } = useDataContext();
+  const { user } = useAuth0();
   const { socket } = useSocketContext();
   const { allList, setAllList, listModalDispatch } = useListContext();
 
@@ -23,7 +25,7 @@ const ListView = () => {
   const { data: listData, isSuccess: listSuccess } = useQuery(
     ["getAllListsInProject", activeProject?.projectId],
     fetchAllListsInProject,
-    { retryDelay: 3000 }
+    { retryDelay: 3000, enabled: activeProject?.projectId !== "" }
   );
   const { mutate: mutateTaskPositionWithinList } = useMutation(
     changeTaskPositionWithinList
@@ -82,7 +84,15 @@ const ListView = () => {
     });
     return () => socket.off("updateList");
   }, [socket, allList]);
-
+  useEffect(() => {
+    socket.on("removeActiveProject", (data) => {
+      if (user?.sub === data) {
+        socket.emit("leaveProject", activeProject);
+        setActiveProject({ projectTitle: "", projectId: "" });
+        setAllList([]);
+      }
+    });
+  }, [socket]);
   return (
     <Box
       backgroundColor="gray.bgLight"
@@ -95,19 +105,27 @@ const ListView = () => {
       pt="0.4rem"
     >
       <DragDropContext onDragEnd={(result) => handleDragEnd(result, allList)}>
-        <Stack direction="row" alignItems="center">
-          <Typography fontWeight="700">{activeProject.projectTitle}</Typography>
-          <Typography
-            variant="caption"
-            color="gray.fontMDark"
-            fontWeight="500"
-            ml="1rem"
-            sx={{ cursor: "pointer" }}
-            onClick={handleOpenNewListModal}
-          >
-            + New list
+        {activeProject.projectId !== "" ? (
+          <Stack direction="row" alignItems="center">
+            <Typography fontWeight="700">
+              {activeProject.projectTitle}
+            </Typography>
+            <Typography
+              variant="caption"
+              color="gray.fontMDark"
+              fontWeight="500"
+              ml="1rem"
+              sx={{ cursor: "pointer" }}
+              onClick={handleOpenNewListModal}
+            >
+              + New list
+            </Typography>
+          </Stack>
+        ) : (
+          <Typography variant="caption" color="gray.fontMDark" fontWeight="500">
+            Choose a project !
           </Typography>
-        </Stack>
+        )}
         {allList !== null &&
           allList.map((list) => <IndividualList list={list} key={list._id} />)}
       </DragDropContext>

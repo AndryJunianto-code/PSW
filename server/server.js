@@ -40,20 +40,31 @@ app.use("/api/notifications", notificationRoutes);
 io.on("connection", (socket) => {
   console.log(`${socket.id} user just connected`);
 
+  socket.on("joinProject", (data) => {
+    socket.join(data.projectId);
+  });
+  socket.on("leaveProject", (data) => {
+    socket.leave(data.projectId);
+  });
+
   socket.on("changePositionListData", (listData) => {
-    io.emit("changePositionListData", listData);
+    io.to(listData[0].projectId).emit("changePositionListData", listData);
   });
 
   socket.on("createNewList", (data) => {
-    io.emit("createNewList", data);
+    io.to(data.projectId).emit("createNewList", data);
   });
 
   socket.on("createNewTask", (listData) => {
-    io.emit("updateList", listData);
+    io.to(listData.projectId).emit("updateList", listData);
   });
 
   socket.on("modifyList", (listData) => {
-    io.emit("updateList", listData);
+    io.to(listData.projectId).emit("updateList", listData);
+  });
+
+  socket.on("removeActiveProject", (data) => {
+    io.emit("removeActiveProject", data);
   });
 });
 

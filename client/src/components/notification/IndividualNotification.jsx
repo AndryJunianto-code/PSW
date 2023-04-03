@@ -15,10 +15,12 @@ const IndividualNotification = ({ notification }) => {
     notification;
   const { user } = useAuth0();
   const queryClient = useQueryClient();
+
   const notificationDate =
     dayjs(createdAt).format("MMM D") +
     " at " +
     dayjs(createdAt).format("h:mm A");
+
   const { mutate: mutateAccept } = useMutation(acceptInvitation, {
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["fetchAllSpaces"] });
@@ -34,6 +36,7 @@ const IndividualNotification = ({ notification }) => {
       userId: user?.sub,
       email: user?.email,
     });
+    console.log(notification);
   };
   return (
     <NotifBox sx={{ width: { xs: "80vw", lg: "40vw" } }}>

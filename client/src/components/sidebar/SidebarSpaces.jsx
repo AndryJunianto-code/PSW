@@ -17,6 +17,7 @@ import NewProjectModal from "../sidebar/NewProjectModal";
 
 const SidebarSpaces = () => {
   const { user } = useAuth0();
+
   const [openNewSpaceModal, setOpenNewSpaceModal] = useState(false);
   const [openNewProjectModal, setOpenNewProjectModal] = useState({
     open: false,
@@ -34,8 +35,11 @@ const SidebarSpaces = () => {
     retryDelay: 3000,
   });
   useEffect(() => {
-    spacesSuccess && setSpaces(spacesData);
+    if (spacesSuccess) {
+      setSpaces(spacesData);
+    }
   }, [spacesData, spacesSuccess]);
+
   return (
     <>
       <Accordion disableGutters elevation={0} square defaultExpanded={true}>

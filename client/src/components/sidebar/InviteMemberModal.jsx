@@ -94,7 +94,7 @@ const InviteMemberModal = ({
               backgroundColor: "#f0f1f3",
               paddingX: "0.5rem",
               paddingY: "0.24rem",
-              fontSize: "0.8rem",
+              fontSize: "1rem",
             }}
             type="email"
             placeholder="Invite by email"
@@ -107,7 +107,7 @@ const InviteMemberModal = ({
             sx={{
               boxShadow: "none",
               textTransform: "initial",
-              fontSize: "0.8rem",
+              fontSize: "1rem",
               borderRadius: "0px 4px 4px 0px",
             }}
           >

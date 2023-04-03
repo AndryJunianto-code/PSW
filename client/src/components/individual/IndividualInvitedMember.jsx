@@ -1,9 +1,10 @@
 import { useAuth0 } from "@auth0/auth0-react";
-import { Avatar, Box, Button, Stack, Typography } from "@mui/material";
+import { Avatar, Button, Stack, Typography } from "@mui/material";
 import React from "react";
 import { useMutation, useQueryClient } from "react-query";
 import { removePeople } from "../../request/spaceRequest";
 import { createNotification } from "../../request/notificationRequest";
+import { useSocketContext } from "../../context/socketContext";
 
 const IndividualInvitedMember = ({
   member,
@@ -14,6 +15,7 @@ const IndividualInvitedMember = ({
 }) => {
   const { username, picture, userId, email } = member;
   const { user } = useAuth0();
+  const { socket } = useSocketContext();
   const queryClient = useQueryClient();
   const { mutate: mutateRemoveNotif } = useMutation(createNotification, {
     onSuccess: (data) => {
@@ -23,6 +25,7 @@ const IndividualInvitedMember = ({
   const { mutate: mutateRemove } = useMutation(removePeople, {
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["fetchAllSpaces"] });
+      socket.emit("removeActiveProject", userId);
       mutateRemoveNotif({
         senderEmail: user?.email,
         receiverEmail: email,

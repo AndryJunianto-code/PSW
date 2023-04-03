@@ -76,13 +76,14 @@ router.put("/acceptInvitation", async (req, res) => {
       },
       { new: true }
     );
-    const clickedNotification = await Notification.findOneAndUpdate(
+    await Notification.findOneAndUpdate(
       { receiverEmail: email, spaceId },
       {
         $set: {
           clicked: true,
         },
-      }
+      },
+      { new: true }
     );
     res.status(200).json(space);
   } catch (err) {
