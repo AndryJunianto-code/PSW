@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 const Sidebar = () => {
   return (
     <Box
-      flex={2}
+      flex={2.2}
       width="100%"
       minHeight="100vh"
       borderRight={"1px solid #f0f0f0"}
@@ -16,7 +16,7 @@ const Sidebar = () => {
         display: { xs: "none", lg: "flex" },
       }}
     >
-      <Box position="fixed" top="0.4rem" width="14.2747%">
+      <Box position="fixed" top="0.4rem" width="15.4%">
         <Box px="0.7rem">
           <Stack
             direction="row"

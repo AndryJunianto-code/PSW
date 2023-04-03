@@ -35,17 +35,15 @@ const IndividualSpaces = ({ space, setOpenNewProjectModal }) => {
   };
   return (
     <>
-      <Accordion
-        disableGutters
-        elevation={0}
-        square
-        onMouseEnter={handleHover}
-        onMouseLeave={handleLeave}
-      >
+      <Accordion disableGutters elevation={0} square>
         <AccordionSummary
-          expandIcon={
-            isHover && <ExpandMoreOutlinedIcon position={"relative"} />
-          }
+          onMouseEnter={handleHover}
+          onMouseLeave={handleLeave}
+          expandIcon={isHover && <ExpandMoreOutlinedIcon />}
+          sx={{
+            position: "relative",
+            backgroundColor: isHover && "gray.bgLight",
+          }}
         >
           <Stack direction="row" alignItems="center">
             <Box
@@ -57,18 +55,21 @@ const IndividualSpaces = ({ space, setOpenNewProjectModal }) => {
                 backgroundColor: space.spaceColor,
                 color: "white",
                 textAlign: "center",
+                position: "absolute",
               }}
             >
               {space.spaceTitle[0]}
             </Box>
-            <Typography variant="body2">{space.spaceTitle}</Typography>
+            <Typography variant="body2" position="absolute" left="3rem">
+              {!isHover && space.spaceTitle}
+            </Typography>
 
             {isHover && (
               <AddIcon
                 onClick={handleOpenNewProjectModal}
                 sx={{
                   position: "absolute",
-                  right: "3.8rem",
+                  right: "4.1rem",
                   color: "gray.fontMDark",
                   width: "1.1rem",
                 }}
@@ -79,7 +80,7 @@ const IndividualSpaces = ({ space, setOpenNewProjectModal }) => {
                 onClick={handleOpenInviteMemberModal}
                 sx={{
                   position: "absolute",
-                  right: "2.5rem",
+                  right: "2.7rem",
                   color: "gray.fontMDark",
                   width: "1.1rem",
                 }}
