@@ -38,7 +38,10 @@ const IndividualTask = ({ task, index, listId }) => {
   const handleOpenDetailTask = (e) => {
     e.preventDefault();
     setCurrentList(listId);
-    if (e.target === e.currentTarget) {
+    if (
+      e.target === e.currentTarget ||
+      e.target === e.currentTarget.childNodes[0]
+    ) {
       setDetailedTaskSelected({ task: taskTitle, open: true });
     }
   };
