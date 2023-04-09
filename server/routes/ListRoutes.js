@@ -84,4 +84,23 @@ router.put("/modifyList", async (req, res) => {
   }
 });
 
+// change due date
+router.put("/dueDate", async (req, res) => {
+  const { listId, taskId, dueDate } = req.body;
+  try {
+    const query = { _id: listId };
+    const updateDocs = {
+      "tasks.$[task].dueDate": dueDate,
+    };
+    const options = {
+      new: true,
+      arrayFilters: [{ "task.taskId": taskId }],
+    };
+    const result = await List.findOneAndUpdate(query, updateDocs, options);
+    res.status(200).json(result);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
 module.exports = router;

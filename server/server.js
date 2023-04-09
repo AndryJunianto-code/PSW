@@ -63,6 +63,10 @@ io.on("connection", (socket) => {
     io.to(listData.projectId).emit("updateList", listData);
   });
 
+  socket.on("setDueDate", (listData) => {
+    io.to(listData.projectId).emit("updateList", listData);
+  });
+
   socket.on("removeActiveProject", (data) => {
     io.emit("removeActiveProject", data);
   });

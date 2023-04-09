@@ -15,6 +15,7 @@ export const ListContextProvider = ({ children }) => {
     listModalReducer,
     initialListModalState
   );
+  const [currentList, setCurrentList] = useState(null); //listId
   return (
     <ListContext.Provider
       value={{
@@ -22,6 +23,8 @@ export const ListContextProvider = ({ children }) => {
         setAllList,
         listModalState,
         listModalDispatch,
+        currentList,
+        setCurrentList,
       }}
     >
       {children}

@@ -17,6 +17,7 @@ const ListSchema = new mongoose.Schema(
     tasks: {
       type: Array,
       default: [],
+      //task id,task title, taskduedate
     },
   },
   { timestamps: true }

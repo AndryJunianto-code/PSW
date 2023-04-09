@@ -1,14 +1,52 @@
 import { Box, Stack, Typography } from "@mui/material";
-import React from "react";
+import React, { useRef, useState } from "react";
 import { Draggable } from "react-beautiful-dnd";
 import { useDataContext } from "../../context/Context";
+import CalendarModal from "../calendar/CalendarModal";
+import { useListContext } from "../../context/listContext";
+import EventAvailableOutlinedIcon from "@mui/icons-material/EventAvailableOutlined";
 
-const IndividualTask = ({ task, index }) => {
+const IndividualTask = ({ task, index, listId }) => {
   const { taskTitle, taskId } = task;
   const { setDetailedTaskSelected } = useDataContext();
-  const handleOpenDetailTask = () => {
-    setDetailedTaskSelected({ task: taskTitle, open: true });
+  const { setCurrentList } = useListContext();
+  const calendarAnchorRef = useRef(null);
+  const [openCalendar, setOpenCalendar] = useState(false);
+  const isToday =
+    new Date(task.dueDate).toDateString() === new Date().toDateString();
+
+  const shortDate = () => {
+    const dateArray = task.dueDate.split(" ");
+    const month = dateArray[0];
+    const date = dateArray[1];
+    const year = dateArray[2];
+    if (isToday) {
+      return "Today";
+    } else if (new Date().getFullYear().toString() !== year) {
+      return task.dueDate;
+    } else {
+      return month + " " + date;
+    }
   };
+  const shortDateColor = () => {
+    const today = new Date().getTime();
+    const dueDate = new Date(task.dueDate).getTime();
+    if (isToday) return "#faa98b";
+    return dueDate > today ? "black" : "red";
+  };
+
+  const handleOpenDetailTask = (e) => {
+    e.preventDefault();
+    setCurrentList(listId);
+    if (e.target === e.currentTarget) {
+      setDetailedTaskSelected({ task: taskTitle, open: true });
+    }
+  };
+  const handleToggleCalendar = () => {
+    setOpenCalendar(false);
+    setOpenCalendar((prev) => !prev);
+  };
+
   return (
     <Draggable draggableId={taskId.toString()} index={index}>
       {(provided) => (
@@ -28,7 +66,36 @@ const IndividualTask = ({ task, index }) => {
             justifyContent="space-between"
           >
             <Typography fontSize="0.8rem">{taskTitle}</Typography>
-            <Typography variant="caption">Mar 6</Typography>
+            {task?.dueDate ? (
+              <Typography
+                variant="caption"
+                ref={calendarAnchorRef}
+                onClick={handleToggleCalendar}
+                sx={{ cursor: "pointer" }}
+                textAlign={"center"}
+                width={"6rem"}
+                color={shortDateColor}
+              >
+                {shortDate()}
+              </Typography>
+            ) : (
+              <EventAvailableOutlinedIcon
+                ref={calendarAnchorRef}
+                onClick={handleToggleCalendar}
+                sx={{
+                  color: "gray.fontMDark",
+                  width: "17px",
+                  cursor: "pointer",
+                }}
+              />
+            )}
+
+            <CalendarModal
+              calendarAnchorRef={calendarAnchorRef}
+              setOpenCalendar={setOpenCalendar}
+              openCalendar={openCalendar}
+              task={task}
+            />
           </Stack>
         </Box>
       )}

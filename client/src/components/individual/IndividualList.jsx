@@ -120,9 +120,9 @@ const IndividualList = ({ list }) => {
         </Stack>
         <Typography
           sx={{ display: `${"isListOpen" ? "block" : "none"}` }}
-          pr="1.8rem"
           variant="caption"
           color="gray.fontMDark"
+          pr="3.75rem"
         >
           Due Date
         </Typography>
@@ -143,6 +143,7 @@ const IndividualList = ({ list }) => {
                       <IndividualTask
                         index={index}
                         task={task}
+                        listId={_id}
                         key={task?.taskId}
                       />
                     )

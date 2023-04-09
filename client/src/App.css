@@ -28,6 +28,17 @@
   padding: 1px 10px;
 }
 
+.gridMiniSystem {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr); /* Creates 7 equal-width columns */
+  grid-template-rows: repeat(5); /* Creates 5 equal-height rows */
+  grid-row-gap: 1rem;
+}
+
+.gridMiniItem {
+  height: 0.5rem;
+}
+
 .headerAlignment {
   width: 100%;
   height: 84%;

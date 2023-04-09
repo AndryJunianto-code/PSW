@@ -37,11 +37,22 @@ export const changeTaskPositionWithinList = async (obj) => {
   return data;
 };
 
+//modify list
 export const modifyList = async (obj) => {
   const { data } = await axios.put("/lists/modifyList", {
     listId: obj.listId,
     newListTitle: obj.newListTitle,
     newListColor: obj.newListColor,
+  });
+  return data;
+};
+
+//changetask due date
+export const changeDueDate = async (obj) => {
+  const { data } = await axios.put("/lists/dueDate", {
+    listId: obj.listId,
+    taskId: obj.taskId,
+    dueDate: obj.dueDate,
   });
   return data;
 };
