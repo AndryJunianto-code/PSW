@@ -103,20 +103,22 @@ const CalendarModal = ({
                   >
                     {task.dueDate ? task.dueDate : "Due date"}
                   </Typography>
-                  <ClearOutlinedIcon
-                    onClick={removeDueDate}
-                    sx={{
-                      width: "10px",
-                      height: "10px",
-                      borderRadius: "50px",
-                      backgroundColor: "primary.main",
-                      color: "white",
-                      padding: "1px",
-                      stroke: "white",
-                      strokeWidth: 1.5,
-                      cursor: "pointer",
-                    }}
-                  />
+                  {task.dueDate && (
+                    <ClearOutlinedIcon
+                      onClick={removeDueDate}
+                      sx={{
+                        width: "10px",
+                        height: "10px",
+                        borderRadius: "50px",
+                        backgroundColor: "primary.main",
+                        color: "white",
+                        padding: "1px",
+                        stroke: "white",
+                        strokeWidth: 1.5,
+                        cursor: "pointer",
+                      }}
+                    />
+                  )}
                 </Stack>
 
                 <Divider variant="fullWidth" />

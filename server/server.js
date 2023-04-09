@@ -67,6 +67,10 @@ io.on("connection", (socket) => {
     io.to(listData.projectId).emit("updateList", listData);
   });
 
+  socket.on("deleteTask", (listData) => {
+    io.to(listData.projectId).emit("updateList", listData);
+  });
+
   socket.on("removeActiveProject", (data) => {
     io.emit("removeActiveProject", data);
   });

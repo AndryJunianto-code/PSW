@@ -49,13 +49,13 @@ const IndividualSpaces = ({ space, setOpenNewProjectModal }) => {
             <Box
               width="1.5rem"
               height="1.5rem"
-              borderRadius="4px"
               mr="1rem"
               sx={{
                 backgroundColor: space.spaceColor,
                 color: "white",
                 textAlign: "center",
                 position: "absolute",
+                borderRadius: "4px",
               }}
             >
               {space.spaceTitle[0]}

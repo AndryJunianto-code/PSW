@@ -103,4 +103,25 @@ router.put("/dueDate", async (req, res) => {
   }
 });
 
+//delete task
+router.put("/deleteTask", async (req, res) => {
+  const { listId, taskId } = req.body;
+  try {
+    const list = await List.findByIdAndUpdate(
+      listId,
+      {
+        $pull: {
+          tasks: {
+            taskId,
+          },
+        },
+      },
+      { new: true }
+    );
+    res.status(200).json(list);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
 module.exports = router;

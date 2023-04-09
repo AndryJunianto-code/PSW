@@ -11,9 +11,26 @@ import {
   Typography,
 } from "@mui/material";
 import { useDataContext } from "../../context/Context";
+import { useMutation } from "react-query";
+import { deleteTask } from "../../request/listRequest";
+import { useSocketContext } from "../../context/socketContext";
 
 const LeftDetailedTask = ({ mobileTaskSection }) => {
-  const { detailedTaskSelected } = useDataContext();
+  const { socket } = useSocketContext();
+  const { detailedTaskSelected, setDetailedTaskSelected } = useDataContext();
+
+  const { mutate: mutateDeleteTask } = useMutation(deleteTask, {
+    onSuccess: (data) => {
+      socket.emit("deleteTask", data);
+      setDetailedTaskSelected({ open: false });
+    },
+  });
+  const handleDeleteTask = () => {
+    mutateDeleteTask({
+      listId: detailedTaskSelected.listId,
+      taskId: detailedTaskSelected.taskId,
+    });
+  };
   return (
     <Box
       flex={2}
@@ -25,7 +42,7 @@ const LeftDetailedTask = ({ mobileTaskSection }) => {
       }}
     >
       <Stack
-        direction="row "
+        direction="row"
         alignItems="center"
         justifyContent="space-between"
         px="2rem"
@@ -49,6 +66,7 @@ const LeftDetailedTask = ({ mobileTaskSection }) => {
           />
         </Stack>
         <DeleteOutlineOutlinedIcon
+          onClick={handleDeleteTask}
           sx={{
             fontSize: "1.1rem",
             color: "gray.fontMDark",
@@ -59,7 +77,7 @@ const LeftDetailedTask = ({ mobileTaskSection }) => {
       <Divider />
       <Box px={"2rem"} mt="1.5rem" mb="5rem" height="16rem">
         <Typography variant="h6" mb="1rem">
-          {detailedTaskSelected.task}
+          {detailedTaskSelected.taskTitle}
         </Typography>
         <Typography variant="caption" lineHeight="0.3rem">
           Swimming is an individual or team racing sport that requires the use

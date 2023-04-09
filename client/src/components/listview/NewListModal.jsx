@@ -163,7 +163,7 @@ const NewListModal = () => {
               textTransform: "initial",
               fontSize: "1rem",
             }}
-            fullWidth
+            fullWidth={true}
           >
             Create
           </Button>
@@ -176,7 +176,7 @@ const NewListModal = () => {
               textTransform: "initial",
               fontSize: "1rem",
             }}
-            fullWidth
+            fullWidth={true}
           >
             Save
           </Button>

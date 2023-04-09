@@ -56,3 +56,12 @@ export const changeDueDate = async (obj) => {
   });
   return data;
 };
+
+//delete task
+export const deleteTask = async (obj) => {
+  const { data } = await axios.put("/lists/deleteTask", {
+    listId: obj.listId,
+    taskId: obj.taskId,
+  });
+  return data;
+};

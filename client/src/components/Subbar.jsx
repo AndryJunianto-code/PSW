@@ -14,11 +14,7 @@ const Subbar = () => {
             marginRight: "0.2rem",
           }}
         />
-        <InputBase
-          placeholder="Search tasks..."
-          sx={{ fontSize: "0.7rem" }}
-          fullWidth
-        />
+        <InputBase placeholder="Search tasks..." sx={{ fontSize: "0.7rem" }} />
         <Divider sx={{ marginX: "0.6rem" }} orientation="vertical" flexItem />
       </Stack>
     </Box>

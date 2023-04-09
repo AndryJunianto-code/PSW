@@ -36,7 +36,6 @@ const IndividualNotification = ({ notification }) => {
       userId: user?.sub,
       email: user?.email,
     });
-    console.log(notification);
   };
   return (
     <NotifBox sx={{ width: { xs: "80vw", lg: "40vw" } }}>

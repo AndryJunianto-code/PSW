@@ -42,14 +42,13 @@ const IndividualTask = ({ task, index, listId }) => {
       e.target === e.currentTarget ||
       e.target === e.currentTarget.childNodes[0]
     ) {
-      setDetailedTaskSelected({ task: taskTitle, open: true });
+      setDetailedTaskSelected({ taskTitle, taskId, listId, open: true });
     }
   };
   const handleToggleCalendar = () => {
     setOpenCalendar(false);
     setOpenCalendar((prev) => !prev);
   };
-
   return (
     <Draggable draggableId={taskId.toString()} index={index}>
       {(provided) => (

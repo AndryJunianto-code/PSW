@@ -8,14 +8,14 @@ const DetailedTaskModal = ({}) => {
   const [mobileTaskSection, setMobileTaskSection] = useState("Details");
 
   const handleCloseModal = () => {
-    setDetailedTaskSelected({ task: "", open: false });
+    setDetailedTaskSelected({ task: {}, open: false });
   };
   const handleMobileTaskSection = (e, value) => {
     setMobileTaskSection(value);
   };
   return (
     <Modal
-      open={"true"}
+      open={true}
       onClose={handleCloseModal}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"

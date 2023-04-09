@@ -94,7 +94,7 @@ const NewSpaceModal = ({
             textTransform: "initial",
             fontSize: "1rem",
           }}
-          fullWidth
+          fullWidth={true}
         >
           Create Project
         </Button>
