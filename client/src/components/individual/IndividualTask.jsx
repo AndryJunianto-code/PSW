@@ -66,29 +66,28 @@ const IndividualTask = ({ task, index, listId }) => {
             justifyContent="space-between"
           >
             <Typography fontSize="0.8rem">{taskTitle}</Typography>
-            {task?.dueDate ? (
-              <Typography
-                variant="caption"
-                ref={calendarAnchorRef}
-                onClick={handleToggleCalendar}
-                sx={{ cursor: "pointer" }}
-                textAlign={"center"}
-                width={"6rem"}
-                color={shortDateColor}
-              >
-                {shortDate()}
-              </Typography>
-            ) : (
-              <EventAvailableOutlinedIcon
-                ref={calendarAnchorRef}
-                onClick={handleToggleCalendar}
-                sx={{
-                  color: "gray.fontMDark",
-                  width: "17px",
-                  cursor: "pointer",
-                }}
-              />
-            )}
+            <Stack ref={calendarAnchorRef} onClick={handleToggleCalendar}>
+              {task?.dueDate ? (
+                <Typography
+                  variant="caption"
+                  sx={{ cursor: "pointer" }}
+                  color={shortDateColor}
+                  pr="1.7rem"
+                >
+                  {shortDate()}
+                </Typography>
+              ) : (
+                <EventAvailableOutlinedIcon
+                  sx={{
+                    color: "gray.fontMDark",
+                    width: "17px",
+                    cursor: "pointer",
+                    pr: "2.3rem",
+                    height: "18.2px",
+                  }}
+                />
+              )}
+            </Stack>
 
             <CalendarModal
               calendarAnchorRef={calendarAnchorRef}

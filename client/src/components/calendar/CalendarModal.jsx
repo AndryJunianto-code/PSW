@@ -13,8 +13,13 @@ import getMonth from "../../utils/getMonth";
 import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined";
 import ChevronLeftOutlinedIcon from "@mui/icons-material/ChevronLeftOutlined";
 import ChevronRightOutlinedIcon from "@mui/icons-material/ChevronRightOutlined";
+import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined";
 import CalendarModalDay from "./CalendarModalDay";
 import dayjs from "dayjs";
+import { changeDueDate } from "../../request/listRequest";
+import { useListContext } from "../../context/listContext";
+import { useMutation } from "react-query";
+import { useSocketContext } from "../../context/socketContext";
 
 const CalendarModal = ({
   calendarAnchorRef,
@@ -22,8 +27,16 @@ const CalendarModal = ({
   openCalendar,
   task,
 }) => {
+  const { socket } = useSocketContext();
+  const { currentList } = useListContext();
   const [currentMonth, setCurrentMonth] = useState(getMonth());
   const [monthIndex, setMonthIndex] = useState(dayjs().month());
+
+  const { mutate: mutateDueDate } = useMutation(changeDueDate, {
+    onSuccess: (data) => {
+      socket.emit("setDueDate", data);
+    },
+  });
   const handleCloseCalendar = (event) => {
     if (
       calendarAnchorRef.current &&
@@ -32,6 +45,14 @@ const CalendarModal = ({
       return;
     }
     setOpenCalendar(false);
+  };
+
+  const removeDueDate = () => {
+    mutateDueDate({
+      listId: currentList,
+      taskId: task.taskId,
+      dueDate: null,
+    });
   };
   const handlePrevMonth = (e) => setMonthIndex(monthIndex - 1);
   const handleNextMonth = (e) => setMonthIndex(monthIndex + 1);
@@ -74,13 +95,28 @@ const CalendarModal = ({
                     }}
                   />
                   <Typography
-                    variant="body2"
+                    variant="caption"
                     ml="0.5rem"
-                    color={"gray.fontMDark"}
+                    mr="0.5rem"
+                    color={task.dueDate ? "black" : "gray.fontMDark"}
                     fontWeight="600"
                   >
-                    Due date
+                    {task.dueDate ? task.dueDate : "Due date"}
                   </Typography>
+                  <ClearOutlinedIcon
+                    onClick={removeDueDate}
+                    sx={{
+                      width: "10px",
+                      height: "10px",
+                      borderRadius: "50px",
+                      backgroundColor: "primary.main",
+                      color: "white",
+                      padding: "1px",
+                      stroke: "white",
+                      strokeWidth: 1.5,
+                      cursor: "pointer",
+                    }}
+                  />
                 </Stack>
 
                 <Divider variant="fullWidth" />
