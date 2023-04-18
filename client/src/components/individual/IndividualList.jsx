@@ -144,6 +144,7 @@ const IndividualList = ({ list }) => {
                         index={index}
                         task={task}
                         listId={_id}
+                        listTitle={listTitle}
                         key={task?.taskId}
                       />
                     )

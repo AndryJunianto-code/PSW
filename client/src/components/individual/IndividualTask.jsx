@@ -1,14 +1,16 @@
 import { Box, Stack, Typography } from "@mui/material";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Draggable } from "react-beautiful-dnd";
 import { useDataContext } from "../../context/Context";
 import CalendarModal from "../calendar/CalendarModal";
 import { useListContext } from "../../context/listContext";
 import EventAvailableOutlinedIcon from "@mui/icons-material/EventAvailableOutlined";
+import { useSocketContext } from "../../context/socketContext";
 
-const IndividualTask = ({ task, index, listId }) => {
+const IndividualTask = ({ task, index, listId, listTitle }) => {
   const { taskTitle, taskId } = task;
-  const { setDetailedTaskSelected } = useDataContext();
+  const { socket } = useSocketContext();
+  const { setDetailedTaskSelected, detailedTaskSelected } = useDataContext();
   const { setCurrentList } = useListContext();
   const calendarAnchorRef = useRef(null);
   const [openCalendar, setOpenCalendar] = useState(false);
@@ -40,15 +42,28 @@ const IndividualTask = ({ task, index, listId }) => {
     setCurrentList(listId);
     if (
       e.target === e.currentTarget ||
-      e.target === e.currentTarget.childNodes[0]
+      e.target === e.currentTarget.childNodes[0] ||
+      e.target.getAttribute("data-title") === "title"
     ) {
-      setDetailedTaskSelected({ taskTitle, taskId, listId, open: true });
+      setDetailedTaskSelected({
+        taskTitle,
+        taskId,
+        listId,
+        listTitle,
+        open: true,
+      });
+      socket.emit("joinTask", taskId);
     }
   };
   const handleToggleCalendar = () => {
     setOpenCalendar(false);
     setOpenCalendar((prev) => !prev);
   };
+  useEffect(() => {
+    if (detailedTaskSelected.taskId === taskId) {
+      setDetailedTaskSelected((prev) => ({ ...prev, listId }));
+    }
+  }, [listId]);
   return (
     <Draggable draggableId={taskId.toString()} index={index}>
       {(provided) => (
@@ -61,13 +76,16 @@ const IndividualTask = ({ task, index, listId }) => {
           px="1rem"
           py="0.3rem"
           onClick={handleOpenDetailTask}
+          sx={{ cursor: "pointer" }}
         >
           <Stack
             direction="row"
             alignItems="center"
             justifyContent="space-between"
           >
-            <Typography fontSize="0.8rem">{taskTitle}</Typography>
+            <Typography fontSize="0.8rem" data-title="title">
+              {taskTitle}
+            </Typography>
             <Stack ref={calendarAnchorRef} onClick={handleToggleCalendar}>
               {task?.dueDate ? (
                 <Typography

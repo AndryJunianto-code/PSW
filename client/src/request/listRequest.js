@@ -65,3 +65,13 @@ export const deleteTask = async (obj) => {
   });
   return data;
 };
+
+//change task title
+export const changeTaskTitle = async (obj) => {
+  const { data } = await axios.put("/lists/taskTitle", {
+    listId: obj.listId,
+    taskId: obj.taskId,
+    taskTitle: obj.taskTitle,
+  });
+  return data;
+};

@@ -47,6 +47,14 @@ io.on("connection", (socket) => {
     socket.leave(data.projectId);
   });
 
+  socket.on("joinTask", (taskId) => {
+    socket.join(taskId);
+  });
+
+  socket.on("leaveTask", (taskId) => {
+    socket.leave(taskId);
+  });
+
   socket.on("changePositionListData", (listData) => {
     io.to(listData[0].projectId).emit("changePositionListData", listData);
   });
@@ -69,6 +77,11 @@ io.on("connection", (socket) => {
 
   socket.on("deleteTask", (listData) => {
     io.to(listData.projectId).emit("updateList", listData);
+  });
+
+  socket.on("changeTaskTitle", ({ listData, taskId }) => {
+    io.to(listData.projectId).emit("updateList", listData);
+    io.to(taskId).emit("updateTask", listData);
   });
 
   socket.on("removeActiveProject", (data) => {

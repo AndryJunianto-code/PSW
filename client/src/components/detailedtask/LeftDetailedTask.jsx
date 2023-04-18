@@ -1,4 +1,4 @@
-import React from "react";
+import { useState } from "react";
 import PersonAddAltOutlinedIcon from "@mui/icons-material/PersonAddAltOutlined";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import {
@@ -7,17 +7,22 @@ import {
   Checkbox,
   Divider,
   FormControlLabel,
+  InputBase,
   Stack,
   Typography,
 } from "@mui/material";
 import { useDataContext } from "../../context/Context";
 import { useMutation } from "react-query";
-import { deleteTask } from "../../request/listRequest";
+import { changeTaskTitle, deleteTask } from "../../request/listRequest";
 import { useSocketContext } from "../../context/socketContext";
 
 const LeftDetailedTask = ({ mobileTaskSection }) => {
   const { socket } = useSocketContext();
   const { detailedTaskSelected, setDetailedTaskSelected } = useDataContext();
+  const [taskTitleInput, setTaskTitleInput] = useState({
+    updateMode: false,
+    title: "",
+  });
 
   const { mutate: mutateDeleteTask } = useMutation(deleteTask, {
     onSuccess: (data) => {
@@ -25,10 +30,39 @@ const LeftDetailedTask = ({ mobileTaskSection }) => {
       setDetailedTaskSelected({ open: false });
     },
   });
+
+  const { mutate: mutateChangeTaskTitle } = useMutation(changeTaskTitle, {
+    onSuccess: (data) => {
+      socket.emit("changeTaskTitle", {
+        listData: data,
+        taskId: detailedTaskSelected.taskId,
+      });
+      setTaskTitleInput({ title: "", updateMode: false });
+    },
+  });
   const handleDeleteTask = () => {
     mutateDeleteTask({
       listId: detailedTaskSelected.listId,
       taskId: detailedTaskSelected.taskId,
+    });
+  };
+  const handleTaskTitleInput = (e) => {
+    setTaskTitleInput({
+      title: e.target.value,
+      updateMode: taskTitleInput.updateMode,
+    });
+  };
+  const handleEditingTitleMode = (e) => {
+    setTaskTitleInput({
+      updateMode: true,
+      title: detailedTaskSelected.taskTitle,
+    });
+  };
+  const handleModifyTaskTitle = () => {
+    mutateChangeTaskTitle({
+      listId: detailedTaskSelected.listId,
+      taskId: detailedTaskSelected.taskId,
+      taskTitle: taskTitleInput.title,
     });
   };
   return (
@@ -51,7 +85,7 @@ const LeftDetailedTask = ({ mobileTaskSection }) => {
       >
         <Stack direction="row" alignItems="center">
           <Button variant="contained" size="small">
-            Uni
+            {detailedTaskSelected.listTitle}
           </Button>
           <PersonAddAltOutlinedIcon
             sx={{
@@ -76,9 +110,36 @@ const LeftDetailedTask = ({ mobileTaskSection }) => {
       </Stack>
       <Divider />
       <Box px={"2rem"} mt="1.5rem" mb="5rem" height="16rem">
-        <Typography variant="h6" mb="1rem">
-          {detailedTaskSelected.taskTitle}
-        </Typography>
+        {taskTitleInput.updateMode ? (
+          <InputBase
+            onBlur={handleModifyTaskTitle}
+            onKeyDown={(e) => e.key === "Enter" && handleModifyTaskTitle()}
+            value={taskTitleInput.title}
+            onChange={handleTaskTitleInput}
+            fullWidth={true}
+            autoFocus={true}
+            sx={{
+              mb: "0.9rem",
+              border: "1px solid #959ba6",
+              px: "0.4rem",
+            }}
+          />
+        ) : (
+          <Typography
+            variant="h6"
+            mb="1rem"
+            px="0.4rem"
+            onClick={handleEditingTitleMode}
+            sx={{
+              "&:hover": {
+                border: "1px solid #959ba6",
+                mb: "0.9rem",
+              },
+            }}
+          >
+            {detailedTaskSelected.taskTitle}
+          </Typography>
+        )}
         <Typography variant="caption" lineHeight="0.3rem">
           Swimming is an individual or team racing sport that requires the use
           of one's entire body to move through water. The sport takes place in

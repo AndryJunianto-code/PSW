@@ -103,6 +103,25 @@ router.put("/dueDate", async (req, res) => {
   }
 });
 
+//change task title
+router.put("/taskTitle", async (req, res) => {
+  const { listId, taskId, taskTitle } = req.body;
+  try {
+    const query = { _id: listId };
+    const updateDocs = {
+      "tasks.$[task].taskTitle": taskTitle,
+    };
+    const options = {
+      new: true,
+      arrayFilters: [{ "task.taskId": taskId }],
+    };
+    const result = await List.findOneAndUpdate(query, updateDocs, options);
+    res.status(200).json(result);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
 //delete task
 router.put("/deleteTask", async (req, res) => {
   const { listId, taskId } = req.body;

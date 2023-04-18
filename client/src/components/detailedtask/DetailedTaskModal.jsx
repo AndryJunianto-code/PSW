@@ -1,18 +1,33 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Modal, Stack, Divider, Tabs, Tab } from "@mui/material";
 import LeftDetailedTask from "./LeftDetailedTask";
 import RightDetailedTask from "./RightDetailedTask";
 import { useDataContext } from "../../context/Context";
+import { useSocketContext } from "../../context/socketContext";
 const DetailedTaskModal = ({}) => {
-  const { setDetailedTaskSelected } = useDataContext();
+  const { socket } = useSocketContext();
+  const { setDetailedTaskSelected, detailedTaskSelected } = useDataContext();
   const [mobileTaskSection, setMobileTaskSection] = useState("Details");
 
   const handleCloseModal = () => {
     setDetailedTaskSelected({ task: {}, open: false });
+    socket.emit("leaveTask", detailedTaskSelected.taskId);
   };
   const handleMobileTaskSection = (e, value) => {
     setMobileTaskSection(value);
   };
+  useEffect(() => {
+    socket.on("updateTask", (listData) => {
+      listData.tasks.map((task) => {
+        if (detailedTaskSelected.taskId === task.taskId) {
+          setDetailedTaskSelected((prev) => ({
+            ...prev,
+            taskTitle: task.taskTitle,
+          }));
+        }
+      });
+    });
+  }, [socket]);
   return (
     <Modal
       open={true}

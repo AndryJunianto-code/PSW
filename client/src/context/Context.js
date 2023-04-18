@@ -10,7 +10,10 @@ const DataContextProvider = ({ children }) => {
   const [openDrawer, setOpenDrawer] = useState(false);
   const [viewMode, setViewMode] = useState("List");
   const [detailedTaskSelected, setDetailedTaskSelected] = useState({
-    task: "",
+    taskTitle: "",
+    taskId: "",
+    listId: "",
+    listTitle: "",
     open: false,
   });
   const toggleDrawer = (open) => (event) => {
