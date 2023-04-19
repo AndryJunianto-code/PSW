@@ -24,7 +24,6 @@ const IndividualList = ({ list }) => {
     createTask,
     {
       onSuccess: (data) => {
-        setNewTaskInputTitle("");
         socket.emit("createNewTask", data);
       },
     }
@@ -42,6 +41,7 @@ const IndividualList = ({ list }) => {
   };
   const handleCreateNewTask = (e) => {
     if (e.keyCode === 13 && newTaskLoading === false) {
+      setNewTaskInputTitle("");
       mutateNewTask({
         listId: _id,
         taskTitle: newTaskInputTitle,

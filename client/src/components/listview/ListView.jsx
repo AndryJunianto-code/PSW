@@ -22,7 +22,11 @@ const ListView = () => {
     listModalDispatch({ type: "openListModal" });
   };
 
-  const { data: listData, isSuccess: listSuccess } = useQuery(
+  const {
+    data: listData,
+    isSuccess: listSuccess,
+    isLoading: listLoading,
+  } = useQuery(
     ["getAllListsInProject", activeProject?.projectId],
     fetchAllListsInProject,
     { retryDelay: 3000, enabled: activeProject?.projectId !== "" }
@@ -72,7 +76,7 @@ const ListView = () => {
   }, [socket]);
   useEffect(() => {
     listData && setAllList(listData);
-  }, [listSuccess, listData]);
+  }, [listData]);
   useEffect(() => {
     socket.on("updateList", (data) => {
       if (allList !== null) {
@@ -93,16 +97,18 @@ const ListView = () => {
       }
     });
   }, [socket]);
+
   return (
     <Box
       backgroundColor="gray.bgLight"
       mt="5.5rem"
       mx="0.8rem"
       borderRadius={"4px"}
-      height="100vh"
+      minHeight="100vh"
       border="0.5px solid #f0f0f0"
       pl="0.8rem"
       pt="0.4rem"
+      pb="8rem"
     >
       <DragDropContext onDragEnd={(result) => handleDragEnd(result, allList)}>
         {activeProject.projectId !== "" ? (

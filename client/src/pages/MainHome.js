@@ -9,8 +9,8 @@ import { useDataContext } from "../context/Context";
 const MainHome = () => {
   const { detailedTaskSelected } = useDataContext();
   return (
-    <Box minHeight="100vh" height="100%" sx={{ overflowY: "hidden" }}>
-      <Stack direction="row" justifyContent="space-between">
+    <Box minHeight="100vh" height="100%" sx={{ overflow: "hidden" }}>
+      <Stack direction="row">
         <MobileSidebar />
         <Sidebar />
         <Mainbar />

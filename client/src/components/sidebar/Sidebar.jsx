@@ -10,6 +10,7 @@ const Sidebar = () => {
     <Box
       flex={2.2}
       width="100%"
+      minWidth="11.5rem"
       minHeight="100vh"
       borderRight={"1px solid #f0f0f0"}
       sx={{

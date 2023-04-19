@@ -61,9 +61,9 @@ const IndividualTask = ({ task, index, listId, listTitle }) => {
   };
   useEffect(() => {
     if (detailedTaskSelected.taskId === taskId) {
-      setDetailedTaskSelected((prev) => ({ ...prev, listId }));
+      setDetailedTaskSelected((prev) => ({ ...prev, listId, listTitle }));
     }
-  }, [listId]);
+  }, [listId, listTitle]);
   return (
     <Draggable draggableId={taskId.toString()} index={index}>
       {(provided) => (

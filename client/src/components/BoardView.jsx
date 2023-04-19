@@ -1,151 +1,99 @@
 import { Box, Stack, Typography } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { DragDropContext } from "react-beautiful-dnd";
 import { ListDroppable } from "../utils/ListDroppable";
 import IndividualBoardTask from "./individual/IndividualBoardTask";
+import IndividualBoardList from "./individual/IndividualBoardList";
+import { useDataContext } from "../context/Context";
+import { useListContext } from "../context/listContext";
+import { useSocketContext } from "../context/socketContext";
+import { changeTaskPositionWithinList } from "../request/listRequest";
+import { useMutation } from "react-query";
 
 const BoardView = () => {
-  const [todos, setTodos] = useState([
-    { id: "1", task: "clean" },
-    { id: "2", task: "running" },
-    { id: "3", task: "drive" },
-    { id: "4", task: "gym" },
-    { id: "5", task: "sleep" },
-    { id: "6", task: "meet friend" },
-    { id: "7", task: "drive" },
-    { id: "8", task: "drink" },
-    { id: "9", task: "club" },
-    { id: "10", task: "games" },
-    { id: "11", task: "work" },
-    { id: "12", task: "swim" },
-    { id: "13", task: "drive" },
-  ]);
-  const [completed, setCompleted] = useState([
-    { id: "AA", task: "cleaning" },
-    { id: "BB", task: "makan" },
-  ]);
+  const { activeProject } = useDataContext();
+  const { allList, setAllList } = useListContext();
+  const { socket } = useSocketContext();
 
-  const handleDragEnd = (result) => {
-    const { source, destination } = result;
+  const { mutate: mutateTaskPositionWithinList } = useMutation(
+    changeTaskPositionWithinList
+  );
+
+  const handleDragEnd = (result, listData) => {
+    const { source, destination, draggableId } = result;
     if (!destination) return;
-    if (
-      destination.droppableId === source.droppableId &&
-      destination.index === source.index
-    )
-      return;
+    const sourceList = listData.filter(
+      (list) => list._id === source.droppableId
+    )[0];
+    const destinationList = listData.filter(
+      (list) => list._id === destination.droppableId
+    )[0];
+    const indexOfSourceList = listData.indexOf(sourceList);
+    const indexOfDestinationList = listData.indexOf(destinationList);
+    const draggingCard = sourceList.tasks.filter(
+      (task) => task?.taskId === draggableId
+    )[0];
 
-    let add;
-    let active = todos;
-    let complete = completed;
-    if (source.droppableId === "todo") {
-      add = active[source.index];
-      active.splice(source.index, 1);
-    } else {
-      add = complete[source.index];
-      complete.splice(source.index, 1);
+    sourceList.tasks.splice(source.index, 1);
+    destinationList.tasks.splice(destination.index, 0, draggingCard);
+    if (source.droppableId !== destination.droppableId) {
+      mutateTaskPositionWithinList({
+        listId: source.droppableId,
+        newTasks: listData[indexOfSourceList].tasks,
+      });
     }
-
-    if (destination.droppableId === "todo") {
-      active.splice(destination.index, 0, add);
-    } else {
-      complete.splice(destination.index, 0, add);
-    }
-
-    setCompleted(complete);
-    setTodos(active);
+    mutateTaskPositionWithinList({
+      listId: destination.droppableId,
+      newTasks: listData[indexOfDestinationList].tasks,
+    });
+    socket.emit("changePositionListData", listData);
   };
-  return (
-    <Box backgroundColor="gray.bgLight" mt="7vh" height="93vh">
-      <Box pt="2rem" pl="2rem" pr="1rem">
-        <DragDropContext onDragEnd={handleDragEnd}>
-          <Stack direction="row">
-            <ListDroppable droppableId="todo">
-              {(provided) => (
-                <Box
-                  width="15rem"
-                  mr="1.2rem"
-                  ref={provided.innerRef}
-                  {...provided.droppableProps}
-                >
-                  <Stack
-                    direction="row"
-                    alignItems="center"
-                    backgroundColor="white"
-                    px="0.3rem"
-                    py="0.5rem"
-                    mb="2rem"
-                    borderRadius="4px"
-                    borderTop="1px solid red"
-                    sx={{ boxShadow: "0px 3px #e8e8e8" }}
-                  >
-                    <Typography variant="body2" mr="1.5rem">
-                      Todo
-                    </Typography>
-                    <Typography variant="caption">17</Typography>
-                  </Stack>
-                  <Box
-                    sx={{
-                      height: "78vh",
-                      overflowY: "auto",
-                    }}
-                  >
-                    {todos.map((todo, index) => (
-                      <IndividualBoardTask
-                        key={index}
-                        todo={todo}
-                        index={index}
-                      />
-                    ))}
-                  </Box>
-                  {provided.placeholder}
-                </Box>
-              )}
-            </ListDroppable>
 
-            {/* SECOND */}
-            <ListDroppable droppableId="completed">
-              {(provided) => (
-                <Box
-                  width="15rem"
-                  mr="1.2rem"
-                  ref={provided.innerRef}
-                  {...provided.droppableProps}
-                >
-                  <Stack
-                    direction="row"
-                    alignItems="center"
-                    backgroundColor="white"
-                    px="0.3rem"
-                    py="0.5rem"
-                    mb="2rem"
-                    borderRadius="4px"
-                    borderTop="1px solid blue"
-                    sx={{ boxShadow: "0px 3px #e8e8e8" }}
-                  >
-                    <Typography variant="body2" mr="1.5rem">
-                      Completed
-                    </Typography>
-                    <Typography variant="caption">17</Typography>
-                  </Stack>
-                  <Box
-                    sx={{
-                      height: "78vh",
-                      overflowY: "auto",
-                    }}
-                  >
-                    {completed.map((todo, index) => (
-                      <IndividualBoardTask
-                        key={index}
-                        todo={todo}
-                        index={index}
-                      />
-                    ))}
-                  </Box>
-                  {provided.placeholder}
-                </Box>
-              )}
-            </ListDroppable>
-          </Stack>
+  useEffect(() => {
+    socket.on("changePositionListData", (data) => {
+      setAllList(data);
+    });
+
+    return () => {
+      socket.off("changePositionListData");
+    };
+  }, [socket]);
+  useEffect(() => {
+    socket.on("updateList", (data) => {
+      if (allList !== null) {
+        const updatedList = allList.map((list) =>
+          list._id === data._id ? data : list
+        );
+        setAllList(updatedList);
+      }
+    });
+    return () => socket.off("updateList");
+  }, [socket, allList]);
+  return (
+    <Box backgroundColor="gray.bgLight" mt="7vh" height="93vh" width="100%">
+      <Box pt="2rem" pl="2rem" pr="1rem">
+        <DragDropContext onDragEnd={(result) => handleDragEnd(result, allList)}>
+          {activeProject.projectId !== "" ? (
+            <Stack
+              direction="row"
+              width={{ xs: "85vw", md: "95vw", lg: "80vw" }}
+              sx={{ overflowX: "auto", cursor: "pointer" }}
+              pb="1rem"
+            >
+              {allList !== null &&
+                allList.map((list) => (
+                  <IndividualBoardList list={list} key={list._id} />
+                ))}
+            </Stack>
+          ) : (
+            <Typography
+              variant="caption"
+              color="gray.fontMDark"
+              fontWeight="500"
+            >
+              Choose a project !
+            </Typography>
+          )}
         </DragDropContext>
       </Box>
     </Box>

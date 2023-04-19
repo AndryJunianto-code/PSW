@@ -1,4 +1,7 @@
 /* width */
+* {
+  user-select: none;
+}
 ::-webkit-scrollbar {
   width: 5px;
 }
