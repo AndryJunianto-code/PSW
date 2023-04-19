@@ -2,6 +2,7 @@ import { Box, Stack, Typography } from "@mui/material";
 import React from "react";
 import { ListDroppable } from "../../utils/ListDroppable";
 import IndividualBoardTask from "./IndividualBoardTask";
+import IndividualTask from "./IndividualTask";
 
 const IndividualBoardList = ({ list }) => {
   const { listTitle, listColor, tasks, _id } = list;
@@ -37,12 +38,13 @@ const IndividualBoardList = ({ list }) => {
               tasks?.map(
                 (task, index) =>
                   task !== null && (
-                    <IndividualBoardTask
+                    <IndividualTask
                       listId={_id}
                       listTitle={listTitle}
                       index={index}
                       task={task}
                       key={task?.taskId}
+                      source={"BoardView"}
                     />
                   )
               )}

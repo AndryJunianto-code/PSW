@@ -1,17 +1,17 @@
 import { Box, Stack, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { DragDropContext } from "react-beautiful-dnd";
-import { ListDroppable } from "../utils/ListDroppable";
-import IndividualBoardTask from "./individual/IndividualBoardTask";
 import IndividualBoardList from "./individual/IndividualBoardList";
 import { useDataContext } from "../context/Context";
 import { useListContext } from "../context/listContext";
 import { useSocketContext } from "../context/socketContext";
 import { changeTaskPositionWithinList } from "../request/listRequest";
 import { useMutation } from "react-query";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const BoardView = () => {
-  const { activeProject } = useDataContext();
+  const { user } = useAuth0();
+  const { activeProject, setActiveProject } = useDataContext();
   const { allList, setAllList } = useListContext();
   const { socket } = useSocketContext();
 
@@ -69,6 +69,15 @@ const BoardView = () => {
     });
     return () => socket.off("updateList");
   }, [socket, allList]);
+  useEffect(() => {
+    socket.on("removeActiveProject", (data) => {
+      if (user?.sub === data) {
+        socket.emit("leaveProject", activeProject);
+        setActiveProject({ projectTitle: "", projectId: "" });
+        setAllList([]);
+      }
+    });
+  }, [socket]);
   return (
     <Box backgroundColor="gray.bgLight" mt="7vh" height="93vh" width="100%">
       <Box pt="2rem" pl="2rem" pr="1rem">

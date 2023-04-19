@@ -59,7 +59,7 @@ const CalendarModalDay = ({ rowIdx, day, task }) => {
               ? "primary.medium"
               : ""
           }
-          padding="0.3rem"
+          padding="0.25rem"
           borderRadius={isToday && !isDueDate ? "50px" : "4px"}
         >
           {day.format("DD")}

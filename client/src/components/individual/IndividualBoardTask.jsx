@@ -10,6 +10,7 @@ const IndividualBoardTask = ({ task, index, listId, listTitle }) => {
   const { setCurrentList } = useListContext();
   const { setDetailedTaskSelected, detailedTaskSelected } = useDataContext();
   const { socket } = useSocketContext();
+
   const handleOpenDetailTask = (e) => {
     e.preventDefault();
     setCurrentList(listId);
@@ -33,25 +34,7 @@ const IndividualBoardTask = ({ task, index, listId, listTitle }) => {
       setDetailedTaskSelected((prev) => ({ ...prev, listId, listTitle }));
     }
   }, [listId, listTitle]);
-  return (
-    <Draggable draggableId={taskId.toString()} index={index}>
-      {(provided) => (
-        <Box
-          {...provided.draggableProps}
-          {...provided.dragHandleProps}
-          ref={provided.innerRef}
-          backgroundColor="white"
-          mb="0.5rem"
-          px="0.7rem"
-          py="1.2rem"
-          sx={{ boxShadow: "0px 2px #e8e8e8" }}
-          onClick={handleOpenDetailTask}
-        >
-          <Typography variant="body2">{taskTitle}</Typography>
-        </Box>
-      )}
-    </Draggable>
-  );
+  return <></>;
 };
 
 export default IndividualBoardTask;

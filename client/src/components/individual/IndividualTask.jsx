@@ -7,7 +7,7 @@ import { useListContext } from "../../context/listContext";
 import EventAvailableOutlinedIcon from "@mui/icons-material/EventAvailableOutlined";
 import { useSocketContext } from "../../context/socketContext";
 
-const IndividualTask = ({ task, index, listId, listTitle }) => {
+const IndividualTask = ({ task, index, listId, listTitle, source }) => {
   const { taskTitle, taskId } = task;
   const { socket } = useSocketContext();
   const { setDetailedTaskSelected, detailedTaskSelected } = useDataContext();
@@ -65,60 +65,116 @@ const IndividualTask = ({ task, index, listId, listTitle }) => {
     }
   }, [listId, listTitle]);
   return (
-    <Draggable draggableId={taskId.toString()} index={index}>
-      {(provided) => (
-        <Box
-          {...provided.draggableProps}
-          {...provided.dragHandleProps}
-          ref={provided.innerRef}
-          backgroundColor="white"
-          mb="0.15rem"
-          px="1rem"
-          py="0.3rem"
-          onClick={handleOpenDetailTask}
-          sx={{ cursor: "pointer" }}
-        >
-          <Stack
-            direction="row"
-            alignItems="center"
-            justifyContent="space-between"
-          >
-            <Typography fontSize="0.8rem" data-title="title">
-              {taskTitle}
-            </Typography>
-            <Stack ref={calendarAnchorRef} onClick={handleToggleCalendar}>
-              {task?.dueDate ? (
-                <Typography
-                  variant="caption"
-                  sx={{ cursor: "pointer" }}
-                  color={shortDateColor}
-                  pr="1.7rem"
-                >
-                  {shortDate()}
+    <>
+      {source === "ListView" ? (
+        <Draggable draggableId={taskId.toString()} index={index}>
+          {(provided) => (
+            <Box
+              {...provided.draggableProps}
+              {...provided.dragHandleProps}
+              ref={provided.innerRef}
+              backgroundColor="white"
+              mb="0.15rem"
+              px="1rem"
+              py="0.3rem"
+              onClick={handleOpenDetailTask}
+              sx={{ cursor: "pointer" }}
+            >
+              <Stack
+                direction="row"
+                alignItems="center"
+                justifyContent="space-between"
+              >
+                <Typography fontSize="0.8rem" data-title="title">
+                  {taskTitle}
                 </Typography>
-              ) : (
-                <EventAvailableOutlinedIcon
-                  sx={{
-                    color: "gray.fontMDark",
-                    width: "17px",
-                    cursor: "pointer",
-                    pr: "2.3rem",
-                    height: "18.2px",
-                  }}
-                />
-              )}
-            </Stack>
+                <Stack ref={calendarAnchorRef} onClick={handleToggleCalendar}>
+                  {task?.dueDate ? (
+                    <Typography
+                      variant="caption"
+                      sx={{ cursor: "pointer" }}
+                      color={shortDateColor}
+                      pr="1.7rem"
+                    >
+                      {shortDate()}
+                    </Typography>
+                  ) : (
+                    <EventAvailableOutlinedIcon
+                      sx={{
+                        color: "gray.fontMDark",
+                        width: "17px",
+                        cursor: "pointer",
+                        pr: "2.3rem",
+                        height: "19.5px",
+                      }}
+                    />
+                  )}
+                </Stack>
 
-            <CalendarModal
-              calendarAnchorRef={calendarAnchorRef}
-              setOpenCalendar={setOpenCalendar}
-              openCalendar={openCalendar}
-              task={task}
-            />
-          </Stack>
-        </Box>
+                <CalendarModal
+                  calendarAnchorRef={calendarAnchorRef}
+                  setOpenCalendar={setOpenCalendar}
+                  openCalendar={openCalendar}
+                  task={task}
+                  source={"ListView"}
+                />
+              </Stack>
+            </Box>
+          )}
+        </Draggable>
+      ) : (
+        <Draggable draggableId={taskId.toString()} index={index}>
+          {(provided) => (
+            <Box
+              {...provided.draggableProps}
+              {...provided.dragHandleProps}
+              ref={provided.innerRef}
+              backgroundColor="white"
+              mb="0.5rem"
+              px="0.7rem"
+              py="1.2rem"
+              sx={{ boxShadow: "0px 2px #e8e8e8" }}
+              onClick={handleOpenDetailTask}
+            >
+              <Stack direction={"column"} alignItems="start">
+                <Typography variant="body2" mb="0.5rem" data-title="title">
+                  {taskTitle}
+                </Typography>
+                <Stack ref={calendarAnchorRef} onClick={handleToggleCalendar}>
+                  {task?.dueDate ? (
+                    <Typography
+                      variant="caption"
+                      sx={{ cursor: "pointer" }}
+                      color={shortDateColor}
+                      pr="1.7rem"
+                    >
+                      {shortDate()}
+                    </Typography>
+                  ) : (
+                    <EventAvailableOutlinedIcon
+                      sx={{
+                        color: "gray.fontMDark",
+                        width: "17px",
+                        cursor: "pointer",
+                        pr: "2.3rem",
+                        height: "19.5px",
+                      }}
+                    />
+                  )}
+                </Stack>
+              </Stack>
+              <CalendarModal
+                calendarAnchorRef={calendarAnchorRef}
+                setOpenCalendar={setOpenCalendar}
+                openCalendar={openCalendar}
+                task={task}
+                source={"BoardView"}
+              />
+            </Box>
+          )}
+        </Draggable>
       )}
-    </Draggable>
+    </>
   );
 };
 

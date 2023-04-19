@@ -145,6 +145,7 @@ const IndividualList = ({ list }) => {
                         task={task}
                         listId={_id}
                         listTitle={listTitle}
+                        source={"ListView"}
                         key={task?.taskId}
                       />
                     )

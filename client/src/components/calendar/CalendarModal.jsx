@@ -26,6 +26,7 @@ const CalendarModal = ({
   setOpenCalendar,
   openCalendar,
   task,
+  source,
 }) => {
   const { socket } = useSocketContext();
   const { currentList } = useListContext();
@@ -75,10 +76,10 @@ const CalendarModal = ({
           {...TransitionProps}
           style={{
             transformOrigin:
-              placement === "bottom-start" ? "left top" : "left bottom",
+              placement === "right-start" ? "left top" : "left bottom",
           }}
         >
-          <Paper>
+          <Paper sx={{ mt: "0.3rem" }}>
             <ClickAwayListener onClickAway={handleCloseCalendar}>
               <Box width="20rem" height="14rem">
                 <Stack
