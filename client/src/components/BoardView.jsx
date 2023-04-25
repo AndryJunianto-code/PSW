@@ -8,16 +8,21 @@ import { useSocketContext } from "../context/socketContext";
 import { changeTaskPositionWithinList } from "../request/listRequest";
 import { useMutation } from "react-query";
 import { useAuth0 } from "@auth0/auth0-react";
+import NewListModal from "./listview/NewListModal";
 
 const BoardView = () => {
   const { user } = useAuth0();
   const { activeProject, setActiveProject } = useDataContext();
-  const { allList, setAllList } = useListContext();
+  const { allList, setAllList, listModalDispatch } = useListContext();
   const { socket } = useSocketContext();
 
   const { mutate: mutateTaskPositionWithinList } = useMutation(
     changeTaskPositionWithinList
   );
+
+  const handleOpenNewListModal = () => {
+    listModalDispatch({ type: "openListModal" });
+  };
 
   const handleDragEnd = (result, listData) => {
     const { source, destination, draggableId } = result;
@@ -93,6 +98,16 @@ const BoardView = () => {
                 allList.map((list) => (
                   <IndividualBoardList list={list} key={list._id} />
                 ))}
+              <Box
+                minWidth="15rem"
+                mr="1.2rem"
+                mt="0.5rem"
+                onClick={handleOpenNewListModal}
+              >
+                <Typography variant="body2" mr="1.5rem" color="gray.fontMDark">
+                  + New list
+                </Typography>
+              </Box>
             </Stack>
           ) : (
             <Typography
@@ -105,6 +120,7 @@ const BoardView = () => {
           )}
         </DragDropContext>
       </Box>
+      <NewListModal />
     </Box>
   );
 };

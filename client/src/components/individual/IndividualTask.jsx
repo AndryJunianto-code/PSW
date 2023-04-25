@@ -133,6 +133,7 @@ const IndividualTask = ({ task, index, listId, listTitle, source }) => {
               mb="0.5rem"
               px="0.7rem"
               py="1.2rem"
+              borderRadius="4px"
               sx={{ boxShadow: "0px 2px #e8e8e8" }}
               onClick={handleOpenDetailTask}
             >
