@@ -8,7 +8,8 @@ import EventAvailableOutlinedIcon from "@mui/icons-material/EventAvailableOutlin
 import { useSocketContext } from "../../context/socketContext";
 
 const IndividualTask = ({ task, index, listId, listTitle, source }) => {
-  const { taskTitle, taskId } = task;
+  const { taskTitle, taskId, taskSubtitle, createdAt, dueDate, taskComments } =
+    task;
   const { socket } = useSocketContext();
   const { setDetailedTaskSelected, detailedTaskSelected } = useDataContext();
   const { setCurrentList } = useListContext();
@@ -47,7 +48,11 @@ const IndividualTask = ({ task, index, listId, listTitle, source }) => {
     ) {
       setDetailedTaskSelected({
         taskTitle,
+        taskSubtitle,
         taskId,
+        taskComments,
+        createdAt,
+        dueDate,
         listId,
         listTitle,
         open: true,

@@ -24,11 +24,13 @@ router.get("/getListInProject/:projectId", async (req, res) => {
 
 //create new task
 router.put("/addNewTask", async (req, res) => {
-  const { taskId, taskTitle, listId } = req.body;
+  const { taskId, taskTitle, listId, createdAt } = req.body;
   try {
     const newTask = {
       taskId,
       taskTitle,
+      createdAt,
+      taskComments: [],
     };
     const list = await List.findByIdAndUpdate(
       listId,
@@ -110,6 +112,46 @@ router.put("/taskTitle", async (req, res) => {
     const query = { _id: listId };
     const updateDocs = {
       "tasks.$[task].taskTitle": taskTitle,
+    };
+    const options = {
+      new: true,
+      arrayFilters: [{ "task.taskId": taskId }],
+    };
+    const result = await List.findOneAndUpdate(query, updateDocs, options);
+    res.status(200).json(result);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+//change task subtitle
+router.put("/taskSubtitle", async (req, res) => {
+  const { listId, taskId, taskSubtitle } = req.body;
+  try {
+    const query = { _id: listId };
+    const updateDocs = {
+      "tasks.$[task].taskSubtitle": taskSubtitle,
+    };
+    const options = {
+      new: true,
+      arrayFilters: [{ "task.taskId": taskId }],
+    };
+    const result = await List.findOneAndUpdate(query, updateDocs, options);
+    res.status(200).json(result);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+//add comment
+router.put("/comment", async (req, res) => {
+  const { listId, taskId, taskComment } = req.body;
+  try {
+    const query = { _id: listId };
+    const updateDocs = {
+      $push: {
+        "tasks.$[task].taskComments": taskComment,
+      },
     };
     const options = {
       new: true,

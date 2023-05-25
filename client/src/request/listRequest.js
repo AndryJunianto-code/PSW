@@ -24,6 +24,7 @@ export const createTask = async (obj) => {
     taskId: obj.taskId,
     taskTitle: obj.taskTitle,
     listId: obj.listId,
+    createdAt: obj.createdAt,
   });
   return data;
 };
@@ -57,6 +58,23 @@ export const changeDueDate = async (obj) => {
   return data;
 };
 
+//add comment
+export const createComment = async (obj) => {
+  const { data } = await axios.put("/lists/comment", {
+    listId: obj.listId,
+    taskId: obj.taskId,
+    taskComment: {
+      commentId: obj.commentId,
+      commentDate: obj.commentDate,
+      comment: obj.comment,
+      userImage: obj.userImage,
+      userId: obj.userId,
+      username: obj.username,
+    },
+  });
+  return data;
+};
+
 //delete task
 export const deleteTask = async (obj) => {
   const { data } = await axios.put("/lists/deleteTask", {
@@ -72,6 +90,15 @@ export const changeTaskTitle = async (obj) => {
     listId: obj.listId,
     taskId: obj.taskId,
     taskTitle: obj.taskTitle,
+  });
+  return data;
+};
+
+export const changeTaskSubtitle = async (obj) => {
+  const { data } = await axios.put("/lists/taskSubtitle", {
+    listId: obj.listId,
+    taskId: obj.taskId,
+    taskSubtitle: obj.taskSubtitle,
   });
   return data;
 };

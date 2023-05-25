@@ -23,6 +23,8 @@ const DetailedTaskModal = ({}) => {
           setDetailedTaskSelected((prev) => ({
             ...prev,
             taskTitle: task.taskTitle,
+            taskSubtitle: task.taskSubtitle,
+            taskComments: task.taskComments,
           }));
         }
       });

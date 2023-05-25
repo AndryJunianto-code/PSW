@@ -12,7 +12,8 @@ import NewListModal from "./listview/NewListModal";
 
 const BoardView = () => {
   const { user } = useAuth0();
-  const { activeProject, setActiveProject } = useDataContext();
+  const { activeProject, setActiveProject, setDetailedTaskSelected } =
+    useDataContext();
   const { allList, setAllList, listModalDispatch } = useListContext();
   const { socket } = useSocketContext();
 
@@ -73,6 +74,12 @@ const BoardView = () => {
       }
     });
     return () => socket.off("updateList");
+  }, [socket, allList]);
+  useEffect(() => {
+    socket.on("deleteTask", (msg) => {
+      setDetailedTaskSelected({ open: false });
+    });
+    return () => socket.off("deleteTask");
   }, [socket, allList]);
   useEffect(() => {
     socket.on("removeActiveProject", (data) => {

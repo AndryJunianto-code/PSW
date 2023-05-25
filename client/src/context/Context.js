@@ -11,7 +11,10 @@ const DataContextProvider = ({ children }) => {
   const [viewMode, setViewMode] = useState("List");
   const [detailedTaskSelected, setDetailedTaskSelected] = useState({
     taskTitle: "",
+    taskSubtitle: "",
     taskId: "",
+    createdAt: "",
+    taskComments: [], //{userprofile,username,userid,date,taskComment}
     listId: "",
     listTitle: "",
     open: false,

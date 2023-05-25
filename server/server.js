@@ -77,9 +77,10 @@ io.on("connection", (socket) => {
 
   socket.on("deleteTask", (listData) => {
     io.to(listData.projectId).emit("updateList", listData);
+    io.to(listData.projectId).emit("deleteTask", "Task has been deleted");
   });
 
-  socket.on("changeTaskTitle", ({ listData, taskId }) => {
+  socket.on("changeTask", ({ listData, taskId }) => {
     io.to(listData.projectId).emit("updateList", listData);
     io.to(taskId).emit("updateTask", listData);
   });

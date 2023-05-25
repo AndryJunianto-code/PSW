@@ -13,7 +13,8 @@ import { useSocketContext } from "../../context/socketContext";
 import { useListContext } from "../../context/listContext";
 import { useAuth0 } from "@auth0/auth0-react";
 const ListView = () => {
-  const { activeProject, setActiveProject } = useDataContext();
+  const { activeProject, setActiveProject, setDetailedTaskSelected } =
+    useDataContext();
   const { user } = useAuth0();
   const { socket } = useSocketContext();
   const { allList, setAllList, listModalDispatch } = useListContext();
@@ -87,6 +88,12 @@ const ListView = () => {
       }
     });
     return () => socket.off("updateList");
+  }, [socket, allList]);
+  useEffect(() => {
+    socket.on("deleteTask", (msg) => {
+      setDetailedTaskSelected({ open: false });
+    });
+    return () => socket.off("deleteTask");
   }, [socket, allList]);
   useEffect(() => {
     socket.on("removeActiveProject", (data) => {
