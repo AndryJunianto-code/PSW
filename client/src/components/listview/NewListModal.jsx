@@ -108,6 +108,7 @@ const NewListModal = () => {
             List name
           </Typography>
           <InputBase
+            autoFocus={true}
             onChange={handleListTitle}
             value={listModalState.listTitle}
             placeholder="Enter List name"

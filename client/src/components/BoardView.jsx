@@ -105,13 +105,15 @@ const BoardView = () => {
                 allList.map((list) => (
                   <IndividualBoardList list={list} key={list._id} />
                 ))}
-              <Box
-                minWidth="15rem"
-                mr="1.2rem"
-                mt="0.5rem"
-                onClick={handleOpenNewListModal}
-              >
-                <Typography variant="body2" mr="1.5rem" color="gray.fontMDark">
+              <Box minWidth="15rem" mr="1.2rem" borderTop={`2px solid #bcc0c7`}>
+                <Typography
+                  variant="body2"
+                  mr="1.5rem"
+                  color="gray.fontMDark"
+                  onClick={handleOpenNewListModal}
+                  textAlign={"center"}
+                  mt="0.5rem"
+                >
                   + New list
                 </Typography>
               </Box>

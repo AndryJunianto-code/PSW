@@ -1,11 +1,17 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Box, Stack, Typography } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
+import { ListDroppable } from "../../utils/ListDroppable";
+import IndividualCalendarTask from "./IndividualCalendarTask";
+import dayjs from "dayjs";
+import { v4 } from "uuid";
 
-const Day = ({ day, rowIdx, idx }) => {
+const Day = ({ day, rowIdx, dateObject }) => {
   const [showTaskIcon, setShowTaskIcon] = useState(false);
   const handleHover = () => setShowTaskIcon(true);
   const handleUnhover = () => setShowTaskIcon(false);
+  const dayFormatted = dayjs(day).format("MMM DD YYYY");
+
   return (
     <Box
       className="gridItem"
@@ -25,50 +31,31 @@ const Day = ({ day, rowIdx, idx }) => {
             {day.format("ddd").toUpperCase()}
           </Typography>
         )}
-        <Box sx={{ position: "absolute", top: "0.2rem", width: "100%" }}>
-          {idx === 5 && rowIdx === 1 && (
+        <ListDroppable droppableId={dayFormatted}>
+          {(provided) => (
             <Box
+              ref={provided.innerRef}
+              {...provided.droppableProps}
               sx={{
-                backgroundColor: "#ffd9e6",
-                px: "0.2rem",
-                py: "0.1rem",
-                borderRadius: "2px",
-                fontSize: "0.8rem",
-                overflow:'hidden'
+                position: "absolute",
+                top: "0.2rem",
+                width: "100%",
+                minHeight: "6rem",
               }}
             >
-              Meet with friends
+              {dateObject.hasOwnProperty(dayFormatted) &&
+                dateObject[dayFormatted]?.map((task, index) => (
+                  <IndividualCalendarTask
+                    key={task.taskId}
+                    index={index}
+                    task={task}
+                  />
+                ))}
+              {provided.placeholder}
             </Box>
           )}
-          {idx === 3 && rowIdx === 2 && (
-            <Box
-              sx={{
-                backgroundColor: "#fdf4b3",
-                px: "0.2rem",
-                py: "0.1rem",
-                borderRadius: "2px",
-                fontSize: "0.8rem",
-                overflow:'hidden'
-              }}
-            >
-              Swimming
-            </Box>
-          )}
-          {idx === 2 && rowIdx === 3 && (
-            <Box
-              sx={{
-                backgroundColor: "#cad4fa",
-                px: "0.2rem",
-                py: "0.1rem",
-                borderRadius: "2px",
-                fontSize: "0.8rem",
-                overflow:'hidden'
-              }}
-            >
-              Workout
-            </Box>
-          )}
-        </Box>
+        </ListDroppable>
+
         <div
           className={`${rowIdx === 0 ? "headerAlignment" : "dateAlignment"}`}
         >
