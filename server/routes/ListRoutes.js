@@ -27,6 +27,7 @@ router.put("/addNewTask", async (req, res) => {
   const { taskId, taskTitle, listId, createdAt } = req.body;
   try {
     const newTask = {
+      listId,
       taskId,
       taskTitle,
       createdAt,

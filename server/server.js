@@ -58,6 +58,9 @@ io.on("connection", (socket) => {
   socket.on("changePositionListData", (listData) => {
     io.to(listData[0].projectId).emit("changePositionListData", listData);
   });
+  socket.on("changeIndividualCalendarTask", (listData) => {
+    io.to(listData[0].projectId).emit("changeIndividualCalendarTask", listData);
+  });
 
   socket.on("createNewList", (data) => {
     io.to(data.projectId).emit("createNewList", data);

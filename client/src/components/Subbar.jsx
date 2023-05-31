@@ -1,11 +1,19 @@
 import { Box, Divider, InputBase, Stack, Typography } from "@mui/material";
-import React from "react";
+import { useState, useEffect } from "react";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import ChevronLeftOutlinedIcon from "@mui/icons-material/ChevronLeftOutlined";
 import ChevronRightOutlinedIcon from "@mui/icons-material/ChevronRightOutlined";
 import dayjs from "dayjs";
+import getMonth from "../utils/getMonth";
 
-const Subbar = ({ viewMode, monthIndexBig }) => {
+const Subbar = ({ viewMode, setCurrentMonth, monthIndex, setMonthIndex }) => {
+  const handlePrevMonth = (e) => setMonthIndex(monthIndex - 1);
+  const handleNextMonth = (e) => setMonthIndex(monthIndex + 1);
+  const handleReset = (e) => setMonthIndex(dayjs().month());
+
+  useEffect(() => {
+    setCurrentMonth(getMonth(monthIndex));
+  }, [monthIndex]);
   return (
     <Box borderBottom={"1px solid #f0f0f0"} pl="0.8rem" py="0.2rem">
       <Stack direction="row" alignItems="center" width="11.3rem">
@@ -25,15 +33,13 @@ const Subbar = ({ viewMode, monthIndexBig }) => {
             alignItems={"center"}
             sx={{ cursor: "pointer" }}
           >
-            <Typography variant="body2" mr="0.3rem">
+            <Typography variant="body2" mr="0.3rem" onClick={handleReset}>
               Today
             </Typography>
-            <ChevronLeftOutlinedIcon />
-            <ChevronRightOutlinedIcon />
+            <ChevronLeftOutlinedIcon onClick={handlePrevMonth} />
+            <ChevronRightOutlinedIcon onClick={handleNextMonth} />
             <Typography variant="body2" width="15rem">
-              {dayjs(new Date(dayjs().year(), monthIndexBig)).format(
-                "MMMM YYYY"
-              )}
+              {dayjs(new Date(dayjs().year(), monthIndex)).format("MMMM YYYY")}
             </Typography>
           </Stack>
         )}

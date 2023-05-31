@@ -5,22 +5,52 @@ import Day from "./Day";
 import dayjs from "dayjs";
 import { DragDropContext } from "react-beautiful-dnd";
 import { useListContext } from "../../context/listContext";
+import { changeDueDate } from "../../request/listRequest";
+import { useMutation } from "react-query";
+import { useSocketContext } from "../../context/socketContext";
 
-const CalendarView = () => {
-  const { allList } = useListContext();
-  const [currentMonth, setCurrentMonth] = useState(getMonth());
-  const [monthIndex, setMonthIndex] = useState(dayjs().month());
+const CalendarView = ({ currentMonth }) => {
+  const { allList, setAllList } = useListContext();
+  const { socket } = useSocketContext();
   const [allTasks, setAllTasks] = useState([]);
   const [dateObject, setDateObject] = useState({});
 
+  const { mutate: mutateDueDate, isLoading: isLoadingDueDate } = useMutation(
+    changeDueDate,
+    {
+      onSuccess: (data) => {},
+    }
+  );
+
   const handleDragEnd = (result, listData) => {
-    const { source, destination } = result;
-    console.log(source, destination);
+    const { destination } = result;
+    if (!destination) return;
+    const ids = result.draggableId.split(" ");
+    const updatedList = listData.filter((list) => list._id === ids[1])[0];
+    const indexOfUpdatedList = listData.indexOf(updatedList);
+    updatedList.tasks.map((task) => {
+      if (task.taskId === ids[0]) {
+        task.dueDate = destination.droppableId;
+      }
+    });
+    listData.splice(indexOfUpdatedList, 1, updatedList);
+    console.log(listData);
+    mutateDueDate({
+      listId: ids[1],
+      taskId: ids[0],
+      dueDate: destination.droppableId,
+    });
+    socket.emit("changeIndividualCalendarTask", listData);
   };
 
   useEffect(() => {
-    setCurrentMonth(getMonth(monthIndex));
-  }, [monthIndex]);
+    socket.on("changeIndividualCalendarTask", (data) => {
+      setAllList(data);
+    });
+    return () => {
+      socket.off("changeIndividualCalendarTask");
+    };
+  }, [socket]);
   useEffect(() => {
     if (allList !== null) {
       allList.map((list) => {
@@ -44,11 +74,8 @@ const CalendarView = () => {
     setDateObject(tempDateObject);
     return () => setDateObject({});
   }, [allTasks]);
-  useEffect(() => {
-    console.log(dateObject);
-  }, [dateObject]);
   return (
-    <DragDropContext onDragEnd={handleDragEnd}>
+    <DragDropContext onDragEnd={(result) => handleDragEnd(result, allList)}>
       <Box backgroundColor="gray.bgLight" mt="5rem" height="90vh">
         <div className="gridSystem">
           {currentMonth &&

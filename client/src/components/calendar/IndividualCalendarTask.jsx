@@ -3,10 +3,13 @@ import React, { useEffect } from "react";
 import { Draggable } from "react-beautiful-dnd";
 
 const IndividualCalendarTask = ({ task, index }) => {
-  const { taskId, taskTitle, dueDate } = task;
+  const { taskId, taskTitle, listId } = task;
 
   return (
-    <Draggable draggableId={taskId.toString()} index={index}>
+    <Draggable
+      draggableId={taskId.toString() + " " + listId.toString()}
+      index={index}
+    >
       {(provided) => (
         <Box
           {...provided.draggableProps}

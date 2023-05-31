@@ -7,15 +7,22 @@ import BoardView from "./BoardView";
 import CalendarView from "./calendar/CalendarView";
 import { useDataContext } from "../context/Context";
 import dayjs from "dayjs";
+import getMonth from "../utils/getMonth";
 const Mainbar = () => {
   const { viewMode } = useDataContext();
-  const [monthIndexBig, setMonthIndexBig] = useState(dayjs().month());
+  const [currentMonth, setCurrentMonth] = useState(getMonth());
+  const [monthIndex, setMonthIndex] = useState(dayjs().month());
   return (
     <Box flex={12} minHeight="100vh">
       <Box position="fixed" width="100%" backgroundColor="white">
         <>
           <Modebar />
-          <Subbar viewMode={viewMode} monthIndexBig={monthIndexBig} />
+          <Subbar
+            viewMode={viewMode}
+            setCurrentMonth={setCurrentMonth}
+            monthIndex={monthIndex}
+            setMonthIndex={setMonthIndex}
+          />
         </>
       </Box>
       {viewMode === "List" ? (
@@ -23,7 +30,7 @@ const Mainbar = () => {
       ) : viewMode === "Board" ? (
         <BoardView />
       ) : viewMode === "Calendar" ? (
-        <CalendarView />
+        <CalendarView currentMonth={currentMonth} />
       ) : (
         ""
       )}

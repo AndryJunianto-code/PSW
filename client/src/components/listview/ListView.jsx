@@ -33,7 +33,10 @@ const ListView = () => {
     { retryDelay: 3000, enabled: activeProject?.projectId !== "" }
   );
   const { mutate: mutateTaskPositionWithinList } = useMutation(
-    changeTaskPositionWithinList
+    changeTaskPositionWithinList,
+    {
+      onSuccess: (data) => console.log(data),
+    }
   );
 
   const handleDragEnd = (result, listData) => {
@@ -50,7 +53,7 @@ const ListView = () => {
     const draggingCard = sourceList.tasks.filter(
       (task) => task?.taskId === draggableId
     )[0];
-
+    draggingCard.listId = destination.droppableId;
     sourceList.tasks.splice(source.index, 1);
     destinationList.tasks.splice(destination.index, 0, draggingCard);
     if (source.droppableId !== destination.droppableId) {

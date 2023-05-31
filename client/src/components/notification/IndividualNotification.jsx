@@ -70,7 +70,7 @@ const IndividualNotification = ({ notification }) => {
           )}
           {clicked === true && <Button color="success">Accepted</Button>}
         </Box>
-        <Typography variant="caption" mr="2rem" color="gray.fontMDark">
+        <Typography variant="caption" color="gray.fontMDark">
           {notificationDate}
         </Typography>
       </Stack>
