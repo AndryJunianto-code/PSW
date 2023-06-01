@@ -24,7 +24,7 @@ router.get("/getListInProject/:projectId", async (req, res) => {
 
 //create new task
 router.put("/addNewTask", async (req, res) => {
-  const { taskId, taskTitle, listId, createdAt } = req.body;
+  const { taskId, taskTitle, listId, createdAt, dueDate } = req.body;
   try {
     const newTask = {
       listId,
@@ -32,6 +32,7 @@ router.put("/addNewTask", async (req, res) => {
       taskTitle,
       createdAt,
       taskComments: [],
+      dueDate,
     };
     const list = await List.findByIdAndUpdate(
       listId,

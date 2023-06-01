@@ -34,7 +34,6 @@ const CalendarView = ({ currentMonth }) => {
       }
     });
     listData.splice(indexOfUpdatedList, 1, updatedList);
-    console.log(listData);
     mutateDueDate({
       listId: ids[1],
       taskId: ids[0],
@@ -42,7 +41,17 @@ const CalendarView = ({ currentMonth }) => {
     });
     socket.emit("changeIndividualCalendarTask", listData);
   };
-
+  useEffect(() => {
+    socket.on("updateList", (data) => {
+      if (allList !== null) {
+        const updatedList = allList.map((list) =>
+          list._id === data._id ? data : list
+        );
+        setAllList(updatedList);
+      }
+    });
+    return () => socket.off("updateList");
+  }, [socket, allList]);
   useEffect(() => {
     socket.on("changeIndividualCalendarTask", (data) => {
       setAllList(data);

@@ -13,7 +13,7 @@ import { ListContextProvider } from "./context/listContext";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 const queryClient = new QueryClient();
 axios.defaults.baseURL =
-  "http://localhost:5000/api"; /* "https://psw-production.up.railway.app/api/" */
+  /* "http://localhost:5000/api"; */ "https://psw-production.up.railway.app/api/";
 root.render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>

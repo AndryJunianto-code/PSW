@@ -93,6 +93,14 @@ const ListView = () => {
     return () => socket.off("updateList");
   }, [socket, allList]);
   useEffect(() => {
+    socket.on("changeIndividualCalendarTask", (data) => {
+      setAllList(data);
+    });
+    return () => {
+      socket.off("changeIndividualCalendarTask");
+    };
+  }, [socket]);
+  useEffect(() => {
     socket.on("deleteTask", (msg) => {
       setDetailedTaskSelected({ open: false });
     });

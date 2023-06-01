@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import socketIO from "socket.io-client";
 
 const socket = socketIO.connect(
-  /* "https://psw-production.up.railway.app/" */ "http://localhost:5000/"
+  "https://psw-production.up.railway.app/" /* "http://localhost:5000/" */
 );
 const SocketContext = React.createContext();
 

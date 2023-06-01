@@ -61,7 +61,6 @@ const IndividualTask = ({ task, index, listId, listTitle, source }) => {
     }
   };
   const handleToggleCalendar = () => {
-    setOpenCalendar(false);
     setOpenCalendar((prev) => !prev);
   };
   useEffect(() => {

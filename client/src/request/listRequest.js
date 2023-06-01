@@ -25,6 +25,7 @@ export const createTask = async (obj) => {
     taskTitle: obj.taskTitle,
     listId: obj.listId,
     createdAt: obj.createdAt,
+    dueDate: obj.dueDate,
   });
   return data;
 };

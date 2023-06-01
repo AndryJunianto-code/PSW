@@ -47,6 +47,7 @@ const IndividualList = ({ list }) => {
         taskTitle: newTaskInputTitle,
         taskId: v4(),
         createdAt: Date.now() / 1000,
+        dueDate: null,
       });
     }
   };
