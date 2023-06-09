@@ -24,7 +24,7 @@ const NewTaskModal = ({
 }) => {
   const { allList } = useListContext();
   const { socket } = useSocketContext();
-  const firstListId = allList[0]._id;
+  const firstListId = allList[0]?._id;
   const [newTaskInputTitle, setNewTaskInputTitle] = useState("");
   const { mutate: mutateNewTask, isLoading: newTaskLoading } = useMutation(
     createTask,

@@ -37,6 +37,8 @@ const IndividualBoardList = ({ list }) => {
         listId: _id,
         taskTitle: newTaskInputTitle,
         taskId: v4(),
+        createdAt: Date.now() / 1000,
+        dueDate: null,
       });
     }
   };
